@@ -4,8 +4,8 @@ swift语言开发的轻量级下拉刷新框架，使用简单方便。
 
 ### 集成方式
 
-* pod: 'pod SwiftRefresh '
-* carthage: 'git SmartPear/SwiftRefresh'
+* Installation with CocoaPods `pod: 'pod SwiftRefresh`
+* Installation with [Carthage](https://github.com/Carthage/Carthage):`carthage: 'git SmartPear/SwiftRefresh`
 
 ![示例](https://github.com/SmartPear/SwiftRefresh/blob/master/%E7%A4%BA%E4%BE%8B%E5%9B%BE%E7%89%87/screenrecording.gif)
 
