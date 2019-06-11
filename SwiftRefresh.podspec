@@ -12,6 +12,5 @@ spec.source       = {:git => "https://github.com/SmartPear/SwiftRefresh.git", :t
 spec.frameworks = 'Foundation'
 spec.source_files  = 'SwiftRefresh/*.swift'
 spec.swift_version = '5.0'
-![image](https://github.com/zhen7216/MapTracking/raw/master/Resources/IMG_6846.PNG)
 
 end
