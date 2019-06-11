@@ -15,7 +15,7 @@ private var RefreshFooterKey = "RefreshFooterKey"
 
 extension UIScrollView {
     
-   public var header:RefreshHeader?{
+  @objc public var header:RefreshHeader?{
         get{
             return objc_getAssociatedObject(self, &RefreshHeaderKey) as? RefreshHeader
         }
@@ -32,7 +32,7 @@ extension UIScrollView {
         }
     }
     
-   public var footer:RefreshFooter?{
+  @objc public var footer:RefreshFooter?{
         
         get{
             return objc_getAssociatedObject(self, &RefreshFooterKey) as? RefreshFooter
