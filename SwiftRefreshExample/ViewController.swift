@@ -18,7 +18,12 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         tableView.autoresizingMask = [.flexibleHeight,.flexibleWidth]
         let header = RefreshHeader.initHeaderWith {
-            
+            [unowned self] in
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 2, execute: {
+                self.value += 3
+                self.tableView.reloadData()
+                self.tableView.header?.endRefresh()
+            })
             
         }
         

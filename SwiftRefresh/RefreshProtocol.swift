@@ -36,7 +36,7 @@ class RefreshCommon: NSObject {
     }
     
     deinit {
-        print("销毁presenter")
+        
         removeObservers()
     }
     

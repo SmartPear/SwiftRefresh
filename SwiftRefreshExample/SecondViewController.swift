@@ -19,11 +19,13 @@ class SecondViewController: UIViewController,UITableViewDelegate,UITableViewData
         let header = RefreshHeader.initHeaderWith {
             [weak self] in
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 2, execute: {
-                print(self,22)
-                //                self.value  = 10
-                //                self.tableView.reloadData()
-                //                self.tableView.header?.endRefresh()
-                //                self.tableView.footer?.isHidden = false
+                if let weakself = self{
+                    weakself.value  = 10
+                    weakself.tableView.reloadData()
+                    weakself.tableView.header?.endRefresh()
+                    weakself.tableView.footer?.isHidden = false
+                }
+                
             })
             
         }
@@ -32,19 +34,19 @@ class SecondViewController: UIViewController,UITableViewDelegate,UITableViewData
         tableView.header = header
         
         
-        //
-        //        let footer = RefreshFooter.initFooterWith(refresh: {
-        //            [unowned self] in
-        //
-        //            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 2, execute: {
-        //                self.value += 3
-        //                self.tableView.reloadData()
-        //                self.tableView.footer?.endRefresh()
-        //            })
-        //        })
-        //
-        //        tableView.footer = footer
-        //        footer.isHidden = true
+        
+        let footer = RefreshFooter.initFooterWith(refresh: {
+            [unowned self] in
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 2, execute: {
+                self.value += 3
+                self.tableView.reloadData()
+                self.tableView.footer?.endRefresh()
+            })
+        })
+        
+        tableView.footer = footer
+        footer.isHidden = true
         // Do any additional setup after loading the view.
     }
     

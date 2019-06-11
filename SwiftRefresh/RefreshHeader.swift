@@ -109,10 +109,7 @@ public class RefreshHeader: RefreshComponent {
             }
         }
     }
-    deinit {
-        print("销毁header")
-    }
-    
+ 
     
     
     override func refreshComplete(_ noMore:Bool) {

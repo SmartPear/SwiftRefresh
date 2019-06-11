@@ -15,9 +15,7 @@ public class RefreshFooter: RefreshComponent {
         footer.refreshClosure = refresh
         return footer
     }
-    deinit {
-        print("tableview 销毁")
-    }
+
     
     override func prepare()  {
         if let superView = self.scrollview{

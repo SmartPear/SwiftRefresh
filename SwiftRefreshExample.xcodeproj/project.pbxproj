@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		038D9B6822AF91D800D8FB6B /* RefreshComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCE22AE520300E99F2A /* RefreshComponent.swift */; };
-		038D9B6922AF91D800D8FB6B /* RefreshFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCF22AE520300E99F2A /* RefreshFooter.swift */; };
-		038D9B6A22AF91D800D8FB6B /* RefreshUnity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CC922AE520300E99F2A /* RefreshUnity.swift */; };
-		038D9B6B22AF91D800D8FB6B /* NoMoreDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCB22AE520300E99F2A /* NoMoreDataView.swift */; };
-		038D9B6C22AF91D800D8FB6B /* HeaderAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCD22AE520300E99F2A /* HeaderAnimation.swift */; };
-		038D9B6D22AF91D800D8FB6B /* RefreshHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCC22AE520300E99F2A /* RefreshHeader.swift */; };
-		038D9B6E22AF91D800D8FB6B /* UIScrollView + SwiftRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCA22AE520300E99F2A /* UIScrollView + SwiftRefresh.swift */; };
 		038D9B7322AFB15100D8FB6B /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038D9B7222AFB15100D8FB6B /* SecondViewController.swift */; };
-		038D9B7522AFB5A400D8FB6B /* RefreshProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038D9B7422AFB5A400D8FB6B /* RefreshProtocol.swift */; };
+		038D9B7622AFCC2500D8FB6B /* RefreshComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCE22AE520300E99F2A /* RefreshComponent.swift */; };
+		038D9B7722AFCC2500D8FB6B /* HeaderAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCD22AE520300E99F2A /* HeaderAnimation.swift */; };
+		038D9B7822AFCC2500D8FB6B /* UIScrollView + SwiftRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCA22AE520300E99F2A /* UIScrollView + SwiftRefresh.swift */; };
+		038D9B7922AFCC2500D8FB6B /* NoMoreDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCB22AE520300E99F2A /* NoMoreDataView.swift */; };
+		038D9B7A22AFCC2500D8FB6B /* RefreshHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCC22AE520300E99F2A /* RefreshHeader.swift */; };
+		038D9B7B22AFCC2500D8FB6B /* RefreshUnity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CC922AE520300E99F2A /* RefreshUnity.swift */; };
+		038D9B7C22AFCC2500D8FB6B /* RefreshProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038D9B7422AFB5A400D8FB6B /* RefreshProtocol.swift */; };
+		038D9B7D22AFCC2500D8FB6B /* RefreshFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCF22AE520300E99F2A /* RefreshFooter.swift */; };
 		03B17CA622AE51B200E99F2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CA522AE51B200E99F2A /* AppDelegate.swift */; };
 		03B17CA822AE51B200E99F2A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CA722AE51B200E99F2A /* ViewController.swift */; };
 		03B17CAB22AE51B200E99F2A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03B17CA922AE51B200E99F2A /* Main.storyboard */; };
@@ -124,14 +124,6 @@
 				03B17CA722AE51B200E99F2A /* ViewController.swift */,
 				038D9B7222AFB15100D8FB6B /* SecondViewController.swift */,
 				03B17CA922AE51B200E99F2A /* Main.storyboard */,
-				03B17CCD22AE520300E99F2A /* HeaderAnimation.swift */,
-				03B17CCB22AE520300E99F2A /* NoMoreDataView.swift */,
-				03B17CCE22AE520300E99F2A /* RefreshComponent.swift */,
-				03B17CCF22AE520300E99F2A /* RefreshFooter.swift */,
-				03B17CCC22AE520300E99F2A /* RefreshHeader.swift */,
-				038D9B7422AFB5A400D8FB6B /* RefreshProtocol.swift */,
-				03B17CC922AE520300E99F2A /* RefreshUnity.swift */,
-				03B17CCA22AE520300E99F2A /* UIScrollView + SwiftRefresh.swift */,
 				03B17CAC22AE51B200E99F2A /* Assets.xcassets */,
 				03B17CAE22AE51B200E99F2A /* LaunchScreen.storyboard */,
 				03B17CB122AE51B200E99F2A /* Info.plist */,
@@ -142,6 +134,14 @@
 		03B17CBD22AE51EE00E99F2A /* SwiftRefresh */ = {
 			isa = PBXGroup;
 			children = (
+				03B17CCD22AE520300E99F2A /* HeaderAnimation.swift */,
+				03B17CCB22AE520300E99F2A /* NoMoreDataView.swift */,
+				03B17CCE22AE520300E99F2A /* RefreshComponent.swift */,
+				03B17CCF22AE520300E99F2A /* RefreshFooter.swift */,
+				03B17CCC22AE520300E99F2A /* RefreshHeader.swift */,
+				038D9B7422AFB5A400D8FB6B /* RefreshProtocol.swift */,
+				03B17CC922AE520300E99F2A /* RefreshUnity.swift */,
+				03B17CCA22AE520300E99F2A /* UIScrollView + SwiftRefresh.swift */,
 				03B17CBE22AE51EE00E99F2A /* SwiftRefresh.h */,
 				03B17CBF22AE51EE00E99F2A /* Info.plist */,
 			);
@@ -262,15 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				038D9B6E22AF91D800D8FB6B /* UIScrollView + SwiftRefresh.swift in Sources */,
-				038D9B6922AF91D800D8FB6B /* RefreshFooter.swift in Sources */,
-				038D9B7522AFB5A400D8FB6B /* RefreshProtocol.swift in Sources */,
-				038D9B6822AF91D800D8FB6B /* RefreshComponent.swift in Sources */,
 				03B17CA822AE51B200E99F2A /* ViewController.swift in Sources */,
-				038D9B6A22AF91D800D8FB6B /* RefreshUnity.swift in Sources */,
-				038D9B6B22AF91D800D8FB6B /* NoMoreDataView.swift in Sources */,
-				038D9B6C22AF91D800D8FB6B /* HeaderAnimation.swift in Sources */,
-				038D9B6D22AF91D800D8FB6B /* RefreshHeader.swift in Sources */,
 				038D9B7322AFB15100D8FB6B /* SecondViewController.swift in Sources */,
 				03B17CA622AE51B200E99F2A /* AppDelegate.swift in Sources */,
 			);
@@ -280,6 +272,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				038D9B7922AFCC2500D8FB6B /* NoMoreDataView.swift in Sources */,
+				038D9B7822AFCC2500D8FB6B /* UIScrollView + SwiftRefresh.swift in Sources */,
+				038D9B7622AFCC2500D8FB6B /* RefreshComponent.swift in Sources */,
+				038D9B7C22AFCC2500D8FB6B /* RefreshProtocol.swift in Sources */,
+				038D9B7D22AFCC2500D8FB6B /* RefreshFooter.swift in Sources */,
+				038D9B7A22AFCC2500D8FB6B /* RefreshHeader.swift in Sources */,
+				038D9B7722AFCC2500D8FB6B /* HeaderAnimation.swift in Sources */,
+				038D9B7B22AFCC2500D8FB6B /* RefreshUnity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,6 +432,7 @@
 		03B17CB522AE51B200E99F2A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VZFZ9L29U3;
@@ -454,6 +455,7 @@
 		03B17CB622AE51B200E99F2A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VZFZ9L29U3;
