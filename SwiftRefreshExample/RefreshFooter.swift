@@ -13,10 +13,11 @@ public class RefreshFooter: RefreshComponent {
     public class func initFooterWith(refresh:@escaping (()->Void)) -> RefreshFooter{
         let footer = RefreshFooter.init()
         footer.refreshClosure = refresh
-        footer.containNoMoreView = true
         return footer
     }
-    
+    deinit {
+        print("tableview 销毁")
+    }
     
     override func prepare()  {
         if let superView = self.scrollview{
@@ -24,27 +25,29 @@ public class RefreshFooter: RefreshComponent {
             self.addSubview(animationView)
             self.addSubview(self.noMoredataView)
             animationView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+            self.animationView.frame = self.bounds
+            if self.state == .willRefresh{
+                self.state = .refreshing
+            }
         }
     }
     
     override func scrollViewContentOffsetDidChange(_ change: CGPoint) {
-        
-        if self.state == .refreshing||self.state == .noMoreData{///如果正在刷新,返回
+        if self.isHidden == true  {return}
+        if self.state == .refreshing || self.state == .noMoreData || self.state == .end || self.state == .noMoreData{///如果正在刷新,返回
             return
         }
         var value:CGFloat = 0.0
         if scrollview!.contentSize.height < scrollview!.bounds.size.height {
             value = scrollview!.contentOffset.y + scrollview!.re_insetTop
         }else{
-            let currentOfset = scrollview!.contentOffset.y
-            let ofset = scrollview!.contentSize.height - scrollview!.bounds.size.height
-            value = currentOfset - ofset - scrollview!.re_insetBottom
+            value = scrollview!.contentOffset.y - scrollview!.contentSize.height + scrollview!.bounds.size.height  - scrollview!.re_insetBottom
         }
         if value < 0 {
             return
         }
         
-        let progress     = min(1, value/freshBeginHeight)
+        let progress   = min(1, value/freshBeginHeight)
         if progress >= CriticalProgress{
             self.state = .willRefresh
             
@@ -61,11 +64,11 @@ public class RefreshFooter: RefreshComponent {
     
     ///
     func animationViewUpdate(with progress:CGFloat) {
-        self.animationView.updateWith(progress)
+        self.animationView.updateLayerPostion(with: progress)
     }
     
     override func startRefresh(){
-        super.startRefresh()
+        self.animationView.startAnimation(true)
         UIView.animate(withDuration: 0.25, animations: {
             let bottom = self.scrollview!.re_insetBottom + freshBeginHeight
             self.scrollview!.re_insetBottom = bottom
@@ -76,7 +79,7 @@ public class RefreshFooter: RefreshComponent {
             }
             offset.y = newValue
             self.scrollview!.setContentOffset(offset, animated: true)
-            self.animationView.startAnimation(true)
+            self.animationViewUpdate(with: 1)
         }) { (_) in
             self.executeRefreshingCallback()
         }
@@ -87,7 +90,11 @@ public class RefreshFooter: RefreshComponent {
     }
     
     public func beginRefresh() {
-        self.state = .refreshing
+        if let _ = self.scrollview{
+            self.state = .refreshing
+        }else{
+            self.state = .willRefresh
+        }
     }
     
     public func noMoreData() {
@@ -95,29 +102,39 @@ public class RefreshFooter: RefreshComponent {
     }
     
     public  func endRefresh() {
-        self.state = .end
+        if self.state == .willRefresh || self.state == .refreshing{
+            self.state = .end
+        }
     }
     
     public func endFreshWithnoMoreData() {
         self.refreshComplete(true)
     }
     
-    override func refreshComplete(_ noMore:Bool) {
-        super.refreshComplete(noMore)
-        UIView.animate(withDuration: 0.25, animations: {
-            self.scrollview!.re_insetBottom = self.scrollview!.re_insetBottom - freshBeginHeight
-        }) { (_) in
-            
-            if noMore == true{
-                self.state = .noMoreData
-                self.animationView.isHidden = true
-                self.noMoredataView.isHidden = false
-            }else{
-                self.state = .idle
+    override func gesStateChanged(_ state:UIGestureRecognizer.State) {
+        if state == .ended{
+            if self.dragProgress == 1.0{
+                self.state = .refreshing
             }
-            self.animationView.startAnimation(false)
         }
-        
+    }
+    
+    override func refreshComplete(_ noMore:Bool) {
+        if let _ = self.scrollview{
+            self.animationView.startAnimation(false)
+            UIView.animate(withDuration: 0.25, animations: {
+                self.scrollview!.re_insetBottom = self.scrollview!.re_insetBottom - freshBeginHeight
+                self.animationViewUpdate(with: 0)
+            }) { (_) in
+                if noMore == true{
+                    self.state = .noMoreData
+                }else{
+                    self.state = .idle
+                }
+            }
+        }else{
+            self.state = .idle
+        }
     }
     
     

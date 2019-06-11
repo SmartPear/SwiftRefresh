@@ -7,7 +7,6 @@
 //
 
 import UIKit
-
 class HeaderAnimation: UIView {
     
     /*
@@ -23,19 +22,29 @@ class HeaderAnimation: UIView {
     private var isAnimation = false
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.clear
-        layer.addSublayer(animationLayer1)
-        layer.addSublayer(animationLayer2)
-        layer.addSublayer(animationLayer3)
+        
+        
+        addSubview(baseView)
+        baseView.translatesAutoresizingMaskIntoConstraints = false
+        let centerx = NSLayoutConstraint.init(item: baseView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0)
+        let centery = NSLayoutConstraint.init(item: baseView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
+        let width = NSLayoutConstraint.init(item: baseView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100)
+        let height = NSLayoutConstraint.init(item: baseView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
+        height.priority = UILayoutPriority.init(900)
+        width.priority = UILayoutPriority.init(900)
+        
+        self.addConstraints([centerx,centery,width,height])
+        self.layoutIfNeeded()
+        baseView.layer.addSublayer(animationLayer1)
+        baseView.layer.addSublayer(animationLayer2)
+        baseView.layer.addSublayer(animationLayer3)
         self.updateLayerPostion(with: 0)
+        
     }
     
-    func updateWith(_ progress:CGFloat) {
-        self.updateLayerPostion(with: progress)
-    }
     
     func startAnimation(_ animation:Bool) {
-
+        
         isAnimation = animation
         if isAnimation{
             self.setupAnimationOne()
@@ -45,21 +54,18 @@ class HeaderAnimation: UIView {
             animationLayer1.removeAnimation(forKey: "animationLayer1")
             animationLayer2.removeAnimation(forKey: "animationLayer2")
             animationLayer3.removeAnimation(forKey: "animationLayer3")
-            self.updateLayerPostion(with: 0)
         }
     }
     
     
     func updateLayerPostion(with progress:CGFloat) {
+        
         let newValue = min(1, progress)
-        let height = self.bounds.size.height/2
-        let centerX = self.center.x
-        let centerY = self.center.y
-        let gapping = (height - bollWidth) * (1 - progress)
-        let newCenterY = centerY +  gapping
-        let point = CGPoint.init(x: centerX, y: newCenterY)
-        let point1 = CGPoint.init(x: centerX - distance * newValue, y: newCenterY)
-        let point2 = CGPoint.init(x: centerX + distance * newValue, y: newCenterY)
+        let centerX = baseView.bounds.size.width/2
+        let centerY = baseView.bounds.size.height/2
+        let point   = CGPoint.init(x: centerX, y: centerY)
+        let point1  = CGPoint.init(x: centerX - distance * newValue, y: centerY)
+        let point2  = CGPoint.init(x: centerX + distance * newValue, y: centerY)
         self.animationLayer2.position = point
         self.animationLayer1.position = point1
         self.animationLayer3.position = point2
@@ -70,9 +76,7 @@ class HeaderAnimation: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         if isAnimation{
-           startAnimation(isAnimation)
-        }else{
-            updateLayerPostion(with: 0)
+            startAnimation(isAnimation)
         }
     }
     
@@ -86,8 +90,8 @@ class HeaderAnimation: UIView {
     func setupAnimationOne(){
         
         let path = CGMutablePath.init()
-        let centerx = self.center.x
-        let centery = self.center.y
+        let centerx = baseView.bounds.size.width/2
+        let centery = baseView.bounds.size.height/2
         let point1 = CGPoint.init(x: centerx - distance, y: centery)
         let point2 = CGPoint.init(x: centerx, y: centery)
         let point3 = CGPoint.init(x: centerx + distance, y: centery)
@@ -98,7 +102,7 @@ class HeaderAnimation: UIView {
         path.addLine(to: point3)
         path.addLine(to: point2)
         path.addLine(to: point1)
-        
+        animationLayer1.position = point1
         let animation = CAKeyframeAnimation.init(keyPath: "position")
         animation.path = path
         let frameAnimation = CAKeyframeAnimation.init(keyPath: "transform.translation.z")
@@ -116,8 +120,8 @@ class HeaderAnimation: UIView {
     func setupAnimationTwo(){
         
         let path = CGMutablePath.init()
-        let centerx = self.center.x
-        let centery = self.center.y
+        let centerx = baseView.bounds.size.width/2
+        let centery = baseView.bounds.size.height/2
         let point3 = CGPoint.init(x: centerx - distance, y: centery )
         let point1 = CGPoint.init(x: centerx + distance, y: centery)
         let point4 = CGPoint.init(x: centerx, y: centery )
@@ -128,7 +132,7 @@ class HeaderAnimation: UIView {
         path.addLine(to: point3)
         path.addLine(to: point4)
         path.addLine(to: point4)
-        
+        animationLayer2.position = point4
         let animation = CAKeyframeAnimation.init(keyPath: "position")
         animation.path = path
         let frameAnimation = CAKeyframeAnimation.init(keyPath: "transform.translation.z")
@@ -137,14 +141,15 @@ class HeaderAnimation: UIView {
         group.animations = [frameAnimation,animation]
         group.duration = duration
         group.repeatCount = HUGE
+        group.isRemovedOnCompletion = false
         animationLayer2.add(group, forKey: "animationLayer2")
     }
     
     func setupAnimationThree(){
         
         let path = CGMutablePath.init()
-        let centerx = self.center.x
-        let centery = self.center.y
+        let centerx = baseView.bounds.size.width/2
+        let centery = baseView.bounds.size.height/2
         let point3 = CGPoint.init(x: centerx - distance, y: centery )
         let point2 = CGPoint.init(x: centerx, y: centery )
         let point1 = CGPoint.init(x: centerx + distance, y: centery)
@@ -156,8 +161,7 @@ class HeaderAnimation: UIView {
         path.addLine(to: point2)
         path.addLine(to: point2)
         path.addLine(to: point1)
-        
-        animationLayer3.position = point2
+        animationLayer3.position = point1
         
         let animation = CAKeyframeAnimation.init(keyPath: "position")
         animation.path = path
@@ -167,6 +171,7 @@ class HeaderAnimation: UIView {
         group.animations = [frameAnimation,animation]
         group.duration = duration
         group.repeatCount = HUGE
+        group.isRemovedOnCompletion = false
         animationLayer3.add(group, forKey: "animationLayer3")
     }
     
@@ -175,7 +180,7 @@ class HeaderAnimation: UIView {
     
     lazy var animationLayer1: CAShapeLayer = {
         let layer = CAShapeLayer.init()
-        layer.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1).cgColor
+        layer.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1).withAlphaComponent(0.8).cgColor
         layer.frame = CGRect.init(x: 0, y: 0, width: bollWidth, height: bollWidth)
         layer.masksToBounds = true
         layer.cornerRadius = CGFloat(bollWidth/2)
@@ -183,7 +188,7 @@ class HeaderAnimation: UIView {
     }()
     lazy var animationLayer2: CAShapeLayer = {
         let layer = CAShapeLayer.init()
-        layer.backgroundColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1).cgColor
+        layer.backgroundColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1).withAlphaComponent(0.8).cgColor
         layer.frame = CGRect.init(x: 0, y: 0, width: bollWidth, height: bollWidth)
         layer.masksToBounds = true
         layer.cornerRadius = CGFloat(bollWidth/2)
@@ -191,14 +196,17 @@ class HeaderAnimation: UIView {
     }()
     lazy var animationLayer3: CAShapeLayer = {
         let layer = CAShapeLayer.init()
-        layer.backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1).cgColor
+        layer.backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1).withAlphaComponent(0.8).cgColor
         layer.frame = CGRect.init(x: 0, y: 0, width: bollWidth, height: bollWidth)
         layer.masksToBounds = true
         layer.cornerRadius = CGFloat(bollWidth/2)
         return layer
     }()
     
-    
+    lazy var baseView: UIView = {
+        let baseView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 100, height: 40))
+        return baseView
+    }()
     
     
     

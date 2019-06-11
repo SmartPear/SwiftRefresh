@@ -1,24 +1,30 @@
 //
-//  ViewController.swift
+//  SecondViewController.swift
 //  SwiftRefreshExample
 //
-//  Created by 王欣 on 2019/6/10.
+//  Created by 王欣 on 2019/6/11.
 //  Copyright © 2019 王欣. All rights reserved.
 //
 
 import UIKit
-import SwiftRefresh
-class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+
+class SecondViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     var  value = 3
-    var aview :HeaderAnimation?
-    var open:Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor.red
         view.addSubview(tableView)
         
         tableView.autoresizingMask = [.flexibleHeight,.flexibleWidth]
         let header = RefreshHeader.initHeaderWith {
-            
+            [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 2, execute: {
+                print(self,22)
+                //                self.value  = 10
+                //                self.tableView.reloadData()
+                //                self.tableView.header?.endRefresh()
+                //                self.tableView.footer?.isHidden = false
+            })
             
         }
         
@@ -26,34 +32,20 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         tableView.header = header
         
         
-        
-        let footer = RefreshFooter.initFooterWith(refresh: {
-            [unowned self] in
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 2, execute: {
-                self.value += 3
-                self.tableView.reloadData()
-                self.tableView.footer?.endRefresh()
-            })
-        })
-        footer.beginRefresh()
-        footer.endRefresh()
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-            self.tableView.footer = footer
-        }
-        
-        
+        //
+        //        let footer = RefreshFooter.initFooterWith(refresh: {
+        //            [unowned self] in
+        //
+        //            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 2, execute: {
+        //                self.value += 3
+        //                self.tableView.reloadData()
+        //                self.tableView.footer?.endRefresh()
+        //            })
+        //        })
+        //
+        //        tableView.footer = footer
         //        footer.isHidden = true
-        leftBar()
         // Do any additional setup after loading the view.
-    }
-    
-    func leftBar()  {
-        let bar = UIBarButtonItem.init(title: "停止", style: UIBarButtonItem.Style.done, target: self, action: #selector(reload))
-        self.navigationItem.leftBarButtonItem =  bar
-    }
-    
-    @objc func reload(){
-        self.tableView.header?.endRefresh()
     }
     
     lazy var tableView: UITableView = {
@@ -80,8 +72,4 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         return cell
     }
     
-    
-    
-    
 }
-
