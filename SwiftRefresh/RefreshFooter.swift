@@ -10,12 +10,12 @@ import UIKit
 
 public class RefreshFooter: RefreshComponent {
     
-    public class func initFooterWith(refresh:@escaping (()->Void)) -> RefreshFooter{
+    @objc public class func initFooterWith(refresh:@escaping (()->Void)) -> RefreshFooter{
         let footer = RefreshFooter.init()
         footer.refreshClosure = refresh
         return footer
     }
-
+    
     
     override func prepare()  {
         if let superView = self.scrollview{
@@ -83,11 +83,11 @@ public class RefreshFooter: RefreshComponent {
         }
     }
     
-    public func resetNoMoredata() {
+   @objc public func resetNoMoredata() {
         self.state = .idle
     }
     
-    public func beginRefresh() {
+   @objc public func beginRefresh() {
         if let _ = self.scrollview{
             self.state = .refreshing
         }else{
@@ -95,17 +95,17 @@ public class RefreshFooter: RefreshComponent {
         }
     }
     
-    public func noMoreData() {
+   @objc public func noMoreData() {
         self.state = .noMoreData
     }
     
-    public  func endRefresh() {
+   @objc public  func endRefresh() {
         if self.state == .willRefresh || self.state == .refreshing{
             self.state = .end
         }
     }
     
-    public func endFreshWithnoMoreData() {
+   @objc public func endFreshWithnoMoreData() {
         self.refreshComplete(true)
     }
     

@@ -16,7 +16,7 @@ public class RefreshHeader: RefreshComponent {
      // Drawing code
      }
      */
-    public class func initHeaderWith(refresh:@escaping (()->Void)) -> RefreshHeader{
+    @objc public class func initHeaderWith(refresh:@escaping (()->Void)) -> RefreshHeader{
         let header = RefreshHeader.init()
         header.refreshClosure = refresh
         return header
@@ -68,13 +68,13 @@ public class RefreshHeader: RefreshComponent {
     }
     
     
-    public func endRefresh() {
+    @objc public func endRefresh() {
         if self.state == .refreshing{
             self.state = .end
         }
     }
     
-    public func beginRefresh() {
+    @objc public func beginRefresh() {
         if let _ = self.scrollview{
             self.state = .refreshing
         }else{
@@ -109,7 +109,7 @@ public class RefreshHeader: RefreshComponent {
             }
         }
     }
- 
+    
     
     
     override func refreshComplete(_ noMore:Bool) {

@@ -2,7 +2,7 @@
 Pod::Spec.new do |spec|
 
 spec.name         = 'SwiftRefresh'
-spec.version      = '0.0.3'
+spec.version      = '0.0.4'
 spec.summary      = 'swift语言开发的轻量级下拉刷新框架，使用简单方便。'
 spec.license      = 'MIT'
 spec.homepage     = 'https://github.com/SmartPear/SwiftRefresh'
