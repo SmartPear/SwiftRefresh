@@ -10,7 +10,7 @@ import UIKit
 import SwiftRefresh
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     var  value = 3
-    var aview :HeaderAnimation?
+
     var open:Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
