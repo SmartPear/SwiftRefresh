@@ -24,13 +24,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 self.tableView.reloadData()
                 self.tableView.header?.endRefresh()
             })
-            
         }
         
         header.beginRefresh()
         tableView.header = header
-        
-        
         
         let footer = RefreshFooter.initFooterWith(refresh: {
             [unowned self] in
@@ -42,14 +39,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         })
         footer.beginRefresh()
         footer.endRefresh()
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-            self.tableView.footer = footer
-        }
-        
-        
-        //        footer.isHidden = true
         leftBar()
-        // Do any additional setup after loading the view.
+
     }
     
     func leftBar()  {

@@ -52,11 +52,10 @@ public class RefreshHeader: RefreshComponent {
         let originOfset  = self.originContentOfSet.y
         
         let currentOfset = scrollview!.contentOffset.y
-        if currentOfset > originOfset{
+        let  offset = -(originOfset + currentOfset)
+        if offset < 0{
             return
         }
-        let  offset = originOfset - currentOfset
-        
         let progress = min(1, offset/freshBeginHeight)
         if progress >= CriticalProgress{
             self.state = .willRefresh
@@ -128,3 +127,4 @@ public class RefreshHeader: RefreshComponent {
         }
     }
 }
+

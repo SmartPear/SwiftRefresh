@@ -25,9 +25,7 @@ class SecondViewController: UIViewController,UITableViewDelegate,UITableViewData
                     weakself.tableView.header?.endRefresh()
                     weakself.tableView.footer?.isHidden = false
                 }
-                
             })
-            
         }
         
         header.beginRefresh()
