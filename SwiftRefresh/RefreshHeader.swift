@@ -114,6 +114,7 @@ public class RefreshHeader: RefreshComponent {
         if let _  = self.scrollview{
             DispatchQueue.main.async {
                 self.animationView.startAnimation(false)
+                self.updateFrameWithProgress(1)
                 UIView.animate(withDuration: refreshAnimationTime, delay: 0, options: [.layoutSubviews,.curveLinear], animations: {
                     self.scrollview!.re_insetTop = self.scrollview!.re_insetTop - freshBeginHeight
                     self.updateFrameWithProgress(0)

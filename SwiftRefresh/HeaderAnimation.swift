@@ -35,9 +35,9 @@ class HeaderAnimation: UIView {
         
         self.addConstraints([centerx,centery,width,height])
         self.layoutIfNeeded()
-        baseView.layer.addSublayer(animationLayer1)
-        baseView.layer.addSublayer(animationLayer2)
-        baseView.layer.addSublayer(animationLayer3)
+        baseView.addSubview(animationLayer1)
+        baseView.addSubview(animationLayer2)
+        baseView.addSubview(animationLayer3)
         self.updateLayerPostion(with: 0)
         
     }
@@ -51,9 +51,10 @@ class HeaderAnimation: UIView {
             self.setupAnimationTwo()
             self.setupAnimationThree()
         }else{
-            animationLayer1.removeAnimation(forKey: "animationLayer1")
-            animationLayer2.removeAnimation(forKey: "animationLayer2")
-            animationLayer3.removeAnimation(forKey: "animationLayer3")
+            animationLayer1.layer.removeAnimation(forKey: "animationLayer1")
+            animationLayer2.layer.removeAnimation(forKey: "animationLayer2")
+            animationLayer3.layer.removeAnimation(forKey: "animationLayer3")
+            updateLayerPostion(with: 0)
         }
     }
     
@@ -66,9 +67,9 @@ class HeaderAnimation: UIView {
         let point   = CGPoint.init(x: centerX, y: centerY)
         let point1  = CGPoint.init(x: centerX - distance * newValue, y: centerY)
         let point2  = CGPoint.init(x: centerX + distance * newValue, y: centerY)
-        self.animationLayer2.position = point
-        self.animationLayer1.position = point1
-        self.animationLayer3.position = point2
+        self.animationLayer2.center = point
+        self.animationLayer1.center = point1
+        self.animationLayer3.center = point2
     }
     
     
@@ -102,7 +103,7 @@ class HeaderAnimation: UIView {
         path.addLine(to: point3)
         path.addLine(to: point2)
         path.addLine(to: point1)
-        animationLayer1.position = point1
+        animationLayer1.layer.position = point1
         let animation = CAKeyframeAnimation.init(keyPath: "position")
         animation.path = path
         let frameAnimation = CAKeyframeAnimation.init(keyPath: "transform.translation.z")
@@ -113,7 +114,7 @@ class HeaderAnimation: UIView {
         group.repeatCount = HUGE
         group.beginTime = 0
         group.isRemovedOnCompletion = false
-        animationLayer1.add(group, forKey: "animationLayer1")
+        animationLayer1.layer.add(group, forKey: "animationLayer1")
         
     }
     
@@ -132,7 +133,7 @@ class HeaderAnimation: UIView {
         path.addLine(to: point3)
         path.addLine(to: point4)
         path.addLine(to: point4)
-        animationLayer2.position = point4
+        animationLayer2.center = point4
         let animation = CAKeyframeAnimation.init(keyPath: "position")
         animation.path = path
         let frameAnimation = CAKeyframeAnimation.init(keyPath: "transform.translation.z")
@@ -142,7 +143,7 @@ class HeaderAnimation: UIView {
         group.duration = duration
         group.repeatCount = HUGE
         group.isRemovedOnCompletion = false
-        animationLayer2.add(group, forKey: "animationLayer2")
+        animationLayer2.layer.add(group, forKey: "animationLayer2")
     }
     
     func setupAnimationThree(){
@@ -161,7 +162,7 @@ class HeaderAnimation: UIView {
         path.addLine(to: point2)
         path.addLine(to: point2)
         path.addLine(to: point1)
-        animationLayer3.position = point1
+        animationLayer3.layer.position = point1
         
         let animation = CAKeyframeAnimation.init(keyPath: "position")
         animation.path = path
@@ -172,34 +173,34 @@ class HeaderAnimation: UIView {
         group.duration = duration
         group.repeatCount = HUGE
         group.isRemovedOnCompletion = false
-        animationLayer3.add(group, forKey: "animationLayer3")
+        animationLayer3.layer.add(group, forKey: "animationLayer3")
     }
     
     
     
     
-    lazy var animationLayer1: CAShapeLayer = {
-        let layer = CAShapeLayer.init()
-        layer.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1).withAlphaComponent(0.8).cgColor
+    lazy var animationLayer1: UIView = {
+        let layer = UIView.init()
+        layer.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1).withAlphaComponent(0.8)
         layer.frame = CGRect.init(x: 0, y: 0, width: bollWidth, height: bollWidth)
-        layer.masksToBounds = true
-        layer.cornerRadius = CGFloat(bollWidth/2)
+        layer.layer.masksToBounds = true
+        layer.layer.cornerRadius = CGFloat(bollWidth/2)
         return layer
     }()
-    lazy var animationLayer2: CAShapeLayer = {
-        let layer = CAShapeLayer.init()
-        layer.backgroundColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1).withAlphaComponent(0.8).cgColor
+    lazy var animationLayer2: UIView = {
+        let layer = UIView.init()
+        layer.backgroundColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1).withAlphaComponent(0.8)
         layer.frame = CGRect.init(x: 0, y: 0, width: bollWidth, height: bollWidth)
-        layer.masksToBounds = true
-        layer.cornerRadius = CGFloat(bollWidth/2)
+        layer.layer.masksToBounds = true
+        layer.layer.cornerRadius = CGFloat(bollWidth/2)
         return layer
     }()
-    lazy var animationLayer3: CAShapeLayer = {
-        let layer = CAShapeLayer.init()
-        layer.backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1).withAlphaComponent(0.8).cgColor
+    lazy var animationLayer3: UIView = {
+        let layer = UIView.init()
+        layer.backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1).withAlphaComponent(0.8)
         layer.frame = CGRect.init(x: 0, y: 0, width: bollWidth, height: bollWidth)
-        layer.masksToBounds = true
-        layer.cornerRadius = CGFloat(bollWidth/2)
+        layer.layer.masksToBounds = true
+        layer.layer.cornerRadius = CGFloat(bollWidth/2)
         return layer
     }()
     

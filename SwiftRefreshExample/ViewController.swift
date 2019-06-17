@@ -14,8 +14,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     var open:Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(tableView)
+//        let a = HeaderAnimation.init()
         
+        view.addSubview(tableView)
+
         tableView.autoresizingMask = [.flexibleHeight,.flexibleWidth]
         let header = RefreshHeader.initHeaderWith {
             [unowned self] in
@@ -25,10 +27,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 self.tableView.header?.endRefresh()
             })
         }
-        
+
         header.beginRefresh()
         tableView.header = header
-        
+
         let footer = RefreshFooter.initFooterWith(refresh: {
             [unowned self] in
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 2, execute: {

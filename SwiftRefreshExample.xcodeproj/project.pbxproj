@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		038D9B7322AFB15100D8FB6B /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038D9B7222AFB15100D8FB6B /* SecondViewController.swift */; };
 		038D9B7622AFCC2500D8FB6B /* RefreshComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCE22AE520300E99F2A /* RefreshComponent.swift */; };
-		038D9B7722AFCC2500D8FB6B /* HeaderAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCD22AE520300E99F2A /* HeaderAnimation.swift */; };
+		038D9B7722AFCC2500D8FB6B /* HeaderAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCD22AE520300E99F2A /* HeaderAnimation.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		038D9B7822AFCC2500D8FB6B /* UIScrollView + SwiftRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCA22AE520300E99F2A /* UIScrollView + SwiftRefresh.swift */; };
 		038D9B7922AFCC2500D8FB6B /* NoMoreDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCB22AE520300E99F2A /* NoMoreDataView.swift */; };
 		038D9B7A22AFCC2500D8FB6B /* RefreshHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCC22AE520300E99F2A /* RefreshHeader.swift */; };
@@ -273,12 +273,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				038D9B7922AFCC2500D8FB6B /* NoMoreDataView.swift in Sources */,
+				038D9B7722AFCC2500D8FB6B /* HeaderAnimation.swift in Sources */,
 				038D9B7822AFCC2500D8FB6B /* UIScrollView + SwiftRefresh.swift in Sources */,
 				038D9B7622AFCC2500D8FB6B /* RefreshComponent.swift in Sources */,
 				038D9B7C22AFCC2500D8FB6B /* RefreshProtocol.swift in Sources */,
 				038D9B7D22AFCC2500D8FB6B /* RefreshFooter.swift in Sources */,
 				038D9B7A22AFCC2500D8FB6B /* RefreshHeader.swift in Sources */,
-				038D9B7722AFCC2500D8FB6B /* HeaderAnimation.swift in Sources */,
 				038D9B7B22AFCC2500D8FB6B /* RefreshUnity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
