@@ -50,9 +50,8 @@ public class RefreshHeader: RefreshComponent {
             return
         }
         let originOfset  = self.originContentOfSet.y
-        
         let currentOfset = scrollview!.contentOffset.y
-        let  offset = -(originOfset + currentOfset)
+        let offset = originOfset - currentOfset
         if offset < 0{
             return
         }
