@@ -80,7 +80,10 @@ public class RefreshHeader: RefreshComponent {
     }
     
     override func startRefresh(){
-        if self.scrollview == nil {return}
+        if self.scrollview == nil {
+            self.state = .idle
+            return
+        }
         safeThread {
             let newValue = self.originContentOfSet + freshBeginHeight
             var offset   = self.scrollview!.contentOffset
@@ -100,7 +103,10 @@ public class RefreshHeader: RefreshComponent {
     
     
     override func refreshComplete(_ noMore:Bool) {
-        if self.scrollview == nil {return}
+        if self.scrollview == nil {
+            self.state = .idle
+            return
+        }
         safeThread {
             self.animationView.startAnimation(false)
             self.updateFrameWithProgress(1)

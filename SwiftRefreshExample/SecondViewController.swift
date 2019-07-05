@@ -41,7 +41,7 @@ class SecondViewController: UIViewController,UITableViewDelegate,UITableViewData
                 if self == nil {return}
                 self?.value += 1
                 self?.tableView.reloadData()
-                self?.tableView.footer?.endRefresh()
+                self?.tableView.footer?.endFreshWithnoMoreData()
             })
         })
         tableView.footer = footer

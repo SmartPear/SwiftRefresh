@@ -10,14 +10,15 @@ import UIKit
 import SwiftRefresh
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     var  value = 3
-
+    
     var open:Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let a = HeaderAnimation.init()
+        navigationController?.navigationBar.isTranslucent = false
+        //        let a = HeaderAnimation.init()
         
         view.addSubview(tableView)
-
+        
         tableView.autoresizingMask = [.flexibleHeight,.flexibleWidth]
         let header = RefreshHeader.initHeaderWith {
             [unowned self] in
@@ -28,7 +29,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             })
         }
         tableView.header = header
-
+        header.beginRefresh()
         let footer = RefreshFooter.initFooterWith(refresh: {
             [unowned self] in
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 2, execute: {
@@ -37,10 +38,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 self.tableView.footer?.endRefresh()
             })
         })
-        footer.beginRefresh()
-        footer.endRefresh()
+        tableView.footer = footer
         leftBar()
-
+        
     }
     
     func leftBar()  {

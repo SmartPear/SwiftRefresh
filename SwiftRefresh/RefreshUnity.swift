@@ -8,7 +8,7 @@
 
 import UIKit
 
-var freshBeginHeight:CGFloat = 70
+var freshBeginHeight:CGFloat = 75
 var CriticalProgress:CGFloat = 1
 var refreshAnimationTime = 0.25
 var noMoreDataText = "没有更多数据"
