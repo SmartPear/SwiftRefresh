@@ -26,6 +26,7 @@ enum RefreshState {
 class RefreshUnity: NSObject {
 
 }
+
 internal func Log(_ messsage : Any...) {
     
     #if DEBUG

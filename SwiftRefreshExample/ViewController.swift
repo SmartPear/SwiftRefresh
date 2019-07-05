@@ -14,9 +14,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     var open:Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.isTranslucent = false
-        //        let a = HeaderAnimation.init()
-        
+        navigationController?.navigationBar.isTranslucent = false        
         view.addSubview(tableView)
         
         tableView.autoresizingMask = [.flexibleHeight,.flexibleWidth]
@@ -39,18 +37,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             })
         })
         tableView.footer = footer
-        leftBar()
         
     }
-    
-    func leftBar()  {
-        let bar = UIBarButtonItem.init(title: "停止", style: UIBarButtonItem.Style.done, target: self, action: #selector(reload))
-        self.navigationItem.leftBarButtonItem =  bar
-    }
-    
-    @objc func reload(){
-        self.tableView.header?.endRefresh()
-    }
+
     
     lazy var tableView: UITableView = {
         let tab = UITableView.init(frame: self.view.bounds)
