@@ -10,12 +10,13 @@ import UIKit
 
 var freshBeginHeight:CGFloat = 70
 var CriticalProgress:CGFloat = 1
-var refreshAnimationTime = 0.2
+var refreshAnimationTime = 0.25
 var noMoreDataText = "没有更多数据"
 
 enum RefreshState {
     case idle
     case willRefresh
+    case pulling //正在被拉动
     case refreshing
     case end
     case noMoreData
@@ -24,4 +25,13 @@ enum RefreshState {
 
 class RefreshUnity: NSObject {
 
+}
+internal func Log(_ messsage : Any...) {
+    
+    #if DEBUG
+    
+    debugPrint("\(messsage):linenum=\(#line) funcName =  \(#function)")
+    
+    #endif
+    
 }

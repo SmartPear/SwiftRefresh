@@ -14,37 +14,39 @@ class SecondViewController: UIViewController,UITableViewDelegate,UITableViewData
         super.viewDidLoad()
         view.backgroundColor = UIColor.red
         view.addSubview(tableView)
-        
+
         tableView.autoresizingMask = [.flexibleHeight,.flexibleWidth]
         let header = RefreshHeader.initHeaderWith {
             [weak self] in
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 2, execute: {
                 if let weakself = self{
-                    weakself.value  = 10
+                    weakself.value  = 12
                     weakself.tableView.reloadData()
                     weakself.tableView.header?.endRefresh()
                     weakself.tableView.footer?.isHidden = false
                 }
             })
         }
-        
+
         header.beginRefresh()
         tableView.header = header
-        
-        
+
+
         
         let footer = RefreshFooter.initFooterWith(refresh: {
             [unowned self] in
-            
+
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 2, execute: {
-                self.value += 3
-                self.tableView.reloadData()
-                self.tableView.footer?.endRefresh()
+                [weak self] in
+                if self == nil {return}
+                self?.value += 1
+                self?.tableView.reloadData()
+                self?.tableView.footer?.endRefresh()
             })
         })
-        
         tableView.footer = footer
-        footer.isHidden = true
+        footer.isHidden = false
+        
         // Do any additional setup after loading the view.
     }
     

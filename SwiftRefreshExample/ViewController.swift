@@ -27,8 +27,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 self.tableView.header?.endRefresh()
             })
         }
-
-        header.beginRefresh()
         tableView.header = header
 
         let footer = RefreshFooter.initFooterWith(refresh: {

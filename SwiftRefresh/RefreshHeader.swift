@@ -17,10 +17,17 @@ public class RefreshHeader: RefreshComponent {
      }
      */
     @objc public class func initHeaderWith(refresh:@escaping (()->Void)) -> RefreshHeader{
-        let header = RefreshHeader.init()
+        let header = RefreshHeader.init(frame: CGRect.init(x: 0, y: -1, width: UIScreen.main.bounds.size.width, height: 1))
         header.refreshClosure = refresh
         return header
-        
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func prepare()  {
@@ -29,81 +36,63 @@ public class RefreshHeader: RefreshComponent {
         self.addSubview(animationView)
         self.autoresizesSubviews = true
         animationView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
-        if self.state == .willRefresh{
-            self.state = .refreshing
-        }
-        
     }
     
     func updateFrameWithProgress(_ progress:CGFloat) {
         if let superview = superview{
-            let height = freshBeginHeight * progress
+            var height = freshBeginHeight * progress
+            if height == 0{
+                height = 0.5
+            }
             self.frame = CGRect.init(x: 0, y: -height, width: superview.bounds.size.width, height: height)
+            Log("更新frame \(self.frame)",String.init(format: "%p", self))
             self.animationView.updateLayerPostion(with:progress)
         }
     }
-    
+
     
     override func scrollViewContentOffsetDidChange(_ change: CGPoint) {
+        Log("offset 监听\(scrollview!.contentOffset)",self.state,String.init(format: "%p", self))
         if self.isHidden == true {return}
+        
         if self.state == .refreshing||self.state == .noMoreData||self.state == .end{///如果正在刷新,返回
             return
         }
-        let originOfset  = self.originContentOfSet.y
-        let currentOfset = scrollview!.contentOffset.y
-        let offset = originOfset - currentOfset
+        if self.scrollview == nil {return}
+        self.originContentOfSet = scrollview!.re_inset.top
+        let originOfset  = self.originContentOfSet
+        let currentOfset = -scrollview!.contentOffset.y
+        let offset = currentOfset - originOfset
         if offset < 0{
             return
         }
         let progress = min(1, offset/freshBeginHeight)
-        if progress >= CriticalProgress{
-            self.state = .willRefresh
-        }else if progress <= 0.2{
-            self.state = .idle
-        }
-        self.dragProgress = progress
-        updateFrameWithProgress(progress)
-    }
-    
-    
-    @objc public func endRefresh() {
-        if self.state == .refreshing{
-            self.state = .end
-        }
-    }
-    
-    @objc public func beginRefresh() {
-        if let _ = self.scrollview{
-            self.state = .refreshing
-        }else{
-            self.state = .willRefresh
-        }
-    }
-    
-    override func gesStateChanged(_ state:UIGestureRecognizer.State) {
-        if state == .ended{
-            if self.state == .willRefresh{
-                self.state = .refreshing
+        if scrollview!.isDragging||self.state != .willRefresh||self.state == .end{
+            if progress >= CriticalProgress{
+                self.state = .willRefresh
+            }else if progress > 0 ,progress < CriticalProgress{
+                self.state = .pulling
+            }else{
+                self.state = .idle
             }
+            updateFrameWithProgress(progress)
         }
     }
     
     override func startRefresh(){
-        super.startRefresh()
-        if let scroll = self.scrollview{
-            DispatchQueue.main.async {
-                let newValue = scroll.re_insetTop + freshBeginHeight
-                let newOfset = -newValue
-                var offset = scroll.contentOffset
-                offset = CGPoint.init(x: offset.x, y: newOfset)
-                self.animationView.startAnimation(true)
-                UIView.animate(withDuration: refreshAnimationTime, animations: {
-                    scroll.re_insetTop = newValue
-                    scroll.setContentOffset(offset, animated: true)
-                    self.updateFrameWithProgress(1)
-                }) { (_) in
-                    self.executeRefreshingCallback()
-                }
+        if self.scrollview == nil {return}
+        safeThread {
+            let newValue = self.originContentOfSet + freshBeginHeight
+            var offset   = self.scrollview!.contentOffset
+            offset = CGPoint.init(x: offset.x, y: -newValue)
+            self.animationView.startAnimation(true)
+            Log("开始刷新 \(newValue)",String.init(format: "%p", self))
+            UIView.animate(withDuration: refreshAnimationTime, animations: {
+                self.scrollview!.re_insetTop = newValue
+                self.scrollview!.setContentOffset(offset, animated: true)
+                self.updateFrameWithProgress(1)
+            }) { (_) in
+                self.executeRefreshingCallback()
             }
         }
     }
@@ -111,19 +100,18 @@ public class RefreshHeader: RefreshComponent {
     
     
     override func refreshComplete(_ noMore:Bool) {
-        if let _  = self.scrollview{
-            DispatchQueue.main.async {
-                self.animationView.startAnimation(false)
-                self.updateFrameWithProgress(1)
-                UIView.animate(withDuration: refreshAnimationTime, delay: 0, options: [.layoutSubviews,.curveLinear], animations: {
-                    self.scrollview!.re_insetTop = self.scrollview!.re_insetTop - freshBeginHeight
-                    self.updateFrameWithProgress(0)
-                }) { (_) in
-                    self.state = .idle
-                }
+        if self.scrollview == nil {return}
+        safeThread {
+            self.animationView.startAnimation(false)
+            self.updateFrameWithProgress(1)
+            Log("刷新结束 \(self.originContentOfSet)",String.init(format: "%p", self))
+            UIView.animate(withDuration: refreshAnimationTime, delay: 0, options: [.curveLinear], animations: {
+                self.scrollview!.re_insetTop = self.originContentOfSet
+                self.updateFrameWithProgress(0)
+            }) { (_) in
+                self.state = .idle
+                
             }
-        }else{
-            self.state = .idle
         }
     }
 }

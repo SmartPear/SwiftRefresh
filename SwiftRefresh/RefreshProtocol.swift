@@ -9,20 +9,19 @@
 import UIKit
 
 protocol RefreshProtocol :NSObject{
-//    var state:RefreshState = .idle
-
+    
     func dragEnd()
     func initContentOffset(_ ofset:CGPoint)
     func scrollViewContentOffsetDidChange(_ change:CGPoint)
     func scrollViewContentSizeDidChange(_ size:CGSize)
-    func gesStateChanged(_ state:UIGestureRecognizer.State)
+    func gesStateChanged(_ gesState:UIGestureRecognizer.State)
     
 }
 
 
 class RefreshCommon: NSObject {
     
-    private var initSrollViewOfset = false
+    
     weak var viewTool:RefreshProtocol?
     weak var scrollView:UIScrollView?
     weak var pan:UIPanGestureRecognizer?
@@ -36,7 +35,6 @@ class RefreshCommon: NSObject {
     }
     
     deinit {
-        
         removeObservers()
     }
     
@@ -63,34 +61,30 @@ class RefreshCommon: NSObject {
     
     
     override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if let scroll = self.scrollView{
-            if keyPath == "contentOffset"{
-                if let  change = change{
-                    if let value = change[NSKeyValueChangeKey.newKey] as? CGPoint{
-                        if initSrollViewOfset == false{
-                            self.viewTool?.initContentOffset(scroll.contentOffset)
-                            return
-                        }
-                        viewTool!.scrollViewContentOffsetDidChange(value)
-                    }
+        
+        if keyPath == "contentOffset"{
+            if let  change = change{
+                if let value = change[NSKeyValueChangeKey.newKey] as? CGPoint{
+                    viewTool!.scrollViewContentOffsetDidChange(value)
                 }
             }
+        }
+        
+        if keyPath == "contentSize"{
             
-            if keyPath == "contentSize"{
-                if let  change = change{
-                    if let value = change[NSKeyValueChangeKey.newKey] as? CGSize{
-                        viewTool!.scrollViewContentSizeDidChange(value)
-                    }
+            if let  change = change{
+                if let value = change[NSKeyValueChangeKey.newKey] as? CGSize{
+                    viewTool!.scrollViewContentSizeDidChange(value)
+                    
                 }
             }
-            
-            if keyPath == "state"{
-                initSrollViewOfset = true
-                if let  change = change{
-                    if let value = change[NSKeyValueChangeKey.newKey] as? Int{
-                        if let state = UIGestureRecognizer.State.init(rawValue: value){
-                            viewTool!.gesStateChanged(state)
-                        }
+        }
+        
+        if keyPath == "state"{
+            if let  change = change{
+                if let value = change[NSKeyValueChangeKey.newKey] as? Int{
+                    if let state = UIGestureRecognizer.State.init(rawValue: value){
+                        viewTool!.gesStateChanged(state)
                     }
                 }
             }

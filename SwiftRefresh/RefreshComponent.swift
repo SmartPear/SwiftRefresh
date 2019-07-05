@@ -12,27 +12,28 @@ import UIKit
 
 public class RefreshComponent: UIView {
     var refreshClosure:(()->Void)?
-    private var _state:RefreshState = .idle
     weak var scrollview:UIScrollView?
-    var originContentOfSet = CGPoint.zero
-    var dragProgress:CGFloat = 0.0
+    var originContentOfSet:CGFloat = 0.0
     var hasShake = false
-
+    var _state = RefreshState.idle
     
     var state:RefreshState {
         get{
-            return _state
+            return self._state
         }
         set{
-            if _state == newValue{
+            Log("state 设置新值 \(newValue)",String.init(format: "%p", self))
+            if self._state == newValue{
                 return
             }
-            _state = newValue
-            switch newValue {
+            self._state = newValue
+            Log("state 新值设置成功 \(self._state)")
+            switch self._state {
             case .idle:
-                self.dragProgress = 0
                 hasShake = false
                 showNoMoreDataView(false)
+            case .pulling:
+                break
             case .refreshing:
                 self.hasShake = true
                 startRefresh()
@@ -43,20 +44,18 @@ public class RefreshComponent: UIView {
                 }
                 break
             case .end:
-                self.dragProgress = 0
                 self.hasShake = false
                 refreshComplete(false)
             case .noMoreData:
-                self.dragProgress = 0
                 showNoMoreDataView(true)
             }
         }
     }
     
+    
     func showNoMoreDataView(_ show:Bool) {
         self.animationView.isHidden = show
         self.noMoredataView.isHidden = !show
-        self.isHidden = false
     }
     
     
@@ -69,15 +68,19 @@ public class RefreshComponent: UIView {
     
     public override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
+        Log("添加到父视图",String.init(format: "%p", self))
         if let scrollView = newSuperview as? UIScrollView{
             self.scrollview = scrollView
             self.presenter.updateScrollView(scrollView)
+            self.originContentOfSet = scrollView.re_inset.top
+            self.frame.size.width = scrollView.bounds.size.width
             prepare()
         }
     }
     
     override init(frame: CGRect) {
-        super.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
+        super.init(frame: frame)
+        Log("初始化",String.init(format: "%p", self))
         self.autoresizingMask = .flexibleWidth
         self.clipsToBounds = true
     }
@@ -87,8 +90,53 @@ public class RefreshComponent: UIView {
     }
     
     
+    public override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        Log("进入 drawRect",String.init(format: "%p", self))
+        if self.state == .willRefresh{
+            Log("willRefresh 进入刷新")
+            if let scroll = self.scrollview{
+                self.originContentOfSet = scroll.re_insetTop
+            }
+            self.state = .refreshing
+        }else{
+            Log("drawRect 不刷新")
+        }
+    }
+    
+    
     func prepare()  {
         
+    }
+    
+    @objc public func beginRefresh(){
+        Log("beginRefresh",String.init(format: "%p", self))
+        if self.isHidden {
+            return
+        }
+        if self.state != .refreshing{
+            if self.window != nil{
+                self.state = .refreshing
+            }else{
+                self.state = .willRefresh
+            }
+        }
+    }
+    
+    @objc public func endRefresh() {
+        if self.state == .refreshing{
+            self.state = .end
+        }
+    }
+    
+    func safeThread(_ funcRun:@escaping (()->Void)) {
+        if Thread.current.isMainThread {
+            funcRun()
+        }else{
+            DispatchQueue.main.async {
+                funcRun()
+            }
+        }
     }
     
     func startRefresh() {
@@ -99,16 +147,18 @@ public class RefreshComponent: UIView {
         
     }
     
-    func gesStateChanged(_ state:UIGestureRecognizer.State) {
-        if state == .ended{
+    func gesStateChanged(_ gesState:UIGestureRecognizer.State) {
+        if gesState == .ended{
             if self.state == .willRefresh{
                 self.state = .refreshing
             }
         }
     }
     
+    
     ///添加震动
     func addShake()  {
+        Log("添加震动",String.init(format: "%p", self))
         if #available(iOS 10.0, *) {
             let feedback = UIImpactFeedbackGenerator.init(style: .light)
             feedback.prepare()
@@ -137,19 +187,11 @@ public class RefreshComponent: UIView {
 
 extension RefreshComponent:RefreshProtocol{
     
-    func dragEnd() {
-        
-    }
+    func dragEnd() {}
     
-    func initContentOffset(_ ofset: CGPoint) {
-        self.originContentOfSet = ofset
-    }
+    func initContentOffset(_ ofset: CGPoint) {}
     
-    @objc func scrollViewContentOffsetDidChange(_ change:CGPoint) {
-        
-    }
+    @objc func scrollViewContentOffsetDidChange(_ change:CGPoint) {}
     
-    @objc func scrollViewContentSizeDidChange(_ size:CGSize) {
-        
-    }
+    @objc func scrollViewContentSizeDidChange(_ size:CGSize) {}
 }

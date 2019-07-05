@@ -22,8 +22,8 @@ class HeaderAnimation: UIView {
     private var isAnimation = false
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        
+        self.clipsToBounds = true
+        backgroundColor = UIColor.clear
         addSubview(baseView)
         baseView.translatesAutoresizingMaskIntoConstraints = false
         let centerx = NSLayoutConstraint.init(item: baseView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0)
@@ -32,9 +32,7 @@ class HeaderAnimation: UIView {
         let height = NSLayoutConstraint.init(item: baseView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
         height.priority = UILayoutPriority.init(900)
         width.priority = UILayoutPriority.init(900)
-        
         self.addConstraints([centerx,centery,width,height])
-        self.layoutIfNeeded()
         baseView.addSubview(animationLayer1)
         baseView.addSubview(animationLayer2)
         baseView.addSubview(animationLayer3)
@@ -70,6 +68,7 @@ class HeaderAnimation: UIView {
         self.animationLayer2.center = point
         self.animationLayer1.center = point1
         self.animationLayer3.center = point2
+        self.layoutIfNeeded()
     }
     
     
@@ -163,7 +162,6 @@ class HeaderAnimation: UIView {
         path.addLine(to: point2)
         path.addLine(to: point1)
         animationLayer3.layer.position = point1
-        
         let animation = CAKeyframeAnimation.init(keyPath: "position")
         animation.path = path
         let frameAnimation = CAKeyframeAnimation.init(keyPath: "transform.translation.z")
@@ -206,6 +204,7 @@ class HeaderAnimation: UIView {
     
     lazy var baseView: UIView = {
         let baseView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 100, height: 40))
+        baseView.backgroundColor = UIColor.clear
         return baseView
     }()
     
