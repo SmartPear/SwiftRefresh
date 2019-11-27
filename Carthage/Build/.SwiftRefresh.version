@@ -1,0 +1,19 @@
+{
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "bbe23e1204a1cf0e5dc8e6fba16c9376853926a6",
+  "iOS" : [
+    {
+      "name" : "SwiftRefresh",
+      "hash" : "d1bc668ec5eb154b08a942494e212d56865b5d864e2277258dbe212e485ced18",
+      "swiftToolchainVersion" : "5.1.2 (swiftlang-1100.0.278 clang-1100.0.33.9)"
+    }
+  ]
+}

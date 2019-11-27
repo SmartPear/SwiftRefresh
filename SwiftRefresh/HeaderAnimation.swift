@@ -16,9 +16,9 @@ class HeaderAnimation: UIView {
      // Drawing code
      }
      */
-    let distance:CGFloat = 30
+    let distance:CGFloat = 28
     let duration = 1.8
-    let bollWidth:CGFloat = 14
+    let bollWidth:CGFloat = 13
     private var isAnimation = false
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -112,7 +112,7 @@ class HeaderAnimation: UIView {
         group.duration = duration
         group.repeatCount = HUGE
         group.beginTime = 0
-        group.isRemovedOnCompletion = false
+        group.isRemovedOnCompletion = true
         animationLayer1.layer.add(group, forKey: "animationLayer1")
         
     }
@@ -141,7 +141,7 @@ class HeaderAnimation: UIView {
         group.animations = [frameAnimation,animation]
         group.duration = duration
         group.repeatCount = HUGE
-        group.isRemovedOnCompletion = false
+        group.isRemovedOnCompletion = true
         animationLayer2.layer.add(group, forKey: "animationLayer2")
     }
     
@@ -170,7 +170,7 @@ class HeaderAnimation: UIView {
         group.animations = [frameAnimation,animation]
         group.duration = duration
         group.repeatCount = HUGE
-        group.isRemovedOnCompletion = false
+        group.isRemovedOnCompletion = true
         animationLayer3.layer.add(group, forKey: "animationLayer3")
     }
     
@@ -179,7 +179,7 @@ class HeaderAnimation: UIView {
     
     lazy var animationLayer1: UIView = {
         let layer = UIView.init()
-        layer.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1).withAlphaComponent(0.8)
+        layer.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1).withAlphaComponent(0.95)
         layer.frame = CGRect.init(x: 0, y: 0, width: bollWidth, height: bollWidth)
         layer.layer.masksToBounds = true
         layer.layer.cornerRadius = CGFloat(bollWidth/2)
@@ -187,7 +187,7 @@ class HeaderAnimation: UIView {
     }()
     lazy var animationLayer2: UIView = {
         let layer = UIView.init()
-        layer.backgroundColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1).withAlphaComponent(0.8)
+        layer.backgroundColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1).withAlphaComponent(0.95)
         layer.frame = CGRect.init(x: 0, y: 0, width: bollWidth, height: bollWidth)
         layer.layer.masksToBounds = true
         layer.layer.cornerRadius = CGFloat(bollWidth/2)
@@ -195,7 +195,7 @@ class HeaderAnimation: UIView {
     }()
     lazy var animationLayer3: UIView = {
         let layer = UIView.init()
-        layer.backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1).withAlphaComponent(0.8)
+        layer.backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1).withAlphaComponent(0.95)
         layer.frame = CGRect.init(x: 0, y: 0, width: bollWidth, height: bollWidth)
         layer.layer.masksToBounds = true
         layer.layer.cornerRadius = CGFloat(bollWidth/2)
