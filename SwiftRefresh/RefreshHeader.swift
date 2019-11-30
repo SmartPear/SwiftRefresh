@@ -49,7 +49,7 @@ public class RefreshHeader: RefreshComponent {
             self.animationView.updateLayerPostion(with:progress)
         }
     }
-
+    
     
     override func scrollViewContentOffsetDidChange(_ change: CGPoint) {
         Log("offset 监听\(scrollview!.contentOffset)",self.state,String.init(format: "%p", self))
@@ -74,6 +74,9 @@ public class RefreshHeader: RefreshComponent {
                 self.state = .pulling
             }else{
                 self.state = .idle
+            }
+            if self.state == .end {
+                return
             }
             updateFrameWithProgress(progress)
         }
@@ -108,15 +111,12 @@ public class RefreshHeader: RefreshComponent {
             return
         }
         safeThread {
-            self.animationView.startAnimation(false)
-            self.updateFrameWithProgress(1)
             Log("刷新结束 \(self.originContentOfSet)",String.init(format: "%p", self))
             UIView.animate(withDuration: refreshAnimationTime, delay: 0, options: [.curveLinear], animations: {
                 self.scrollview!.re_insetTop = self.originContentOfSet
-                self.updateFrameWithProgress(0)
             }) { (_) in
+                self.animationView.startAnimation(false)
                 self.state = .idle
-                
             }
         }
     }

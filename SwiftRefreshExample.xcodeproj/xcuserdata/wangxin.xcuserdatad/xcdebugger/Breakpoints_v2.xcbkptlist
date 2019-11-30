@@ -69,32 +69,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "0C3F9155-A586-4E05-B147-D06F8A2B6FF7"
-            shouldBeEnabled = "Yes"
+            uuid = "1B7ABD66-0109-4890-BDF5-E19612D2B34E"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftRefresh/HeaderAnimation.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "startAnimation(_:)"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "updateLayerPostion(with:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1B7ABD66-0109-4890-BDF5-E19612D2B34E"
+            uuid = "BC1E48E1-A54C-4F44-B62E-A6B2E158B7E7"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SwiftRefresh/HeaderAnimation.swift"
+            filePath = "SwiftRefresh/RefreshHeader.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "updateLayerPostion(with:)"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "refreshComplete(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

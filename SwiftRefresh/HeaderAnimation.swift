@@ -20,6 +20,7 @@ class HeaderAnimation: UIView {
     let duration = 1.8
     let bollWidth:CGFloat = 13
     private var isAnimation = false
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.clipsToBounds = true
@@ -28,8 +29,8 @@ class HeaderAnimation: UIView {
         baseView.translatesAutoresizingMaskIntoConstraints = false
         let centerx = NSLayoutConstraint.init(item: baseView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0)
         let centery = NSLayoutConstraint.init(item: baseView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
-        let width = NSLayoutConstraint.init(item: baseView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100)
-        let height = NSLayoutConstraint.init(item: baseView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
+        let width   = NSLayoutConstraint.init(item: baseView, attribute: .width,   relatedBy: .equal, toItem: nil,  attribute: .notAnAttribute, multiplier: 1, constant: 100)
+        let height  = NSLayoutConstraint.init(item: baseView, attribute: .height, relatedBy: .equal,  toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
         height.priority = UILayoutPriority.init(900)
         width.priority = UILayoutPriority.init(900)
         self.addConstraints([centerx,centery,width,height])
@@ -49,10 +50,9 @@ class HeaderAnimation: UIView {
             self.setupAnimationTwo()
             self.setupAnimationThree()
         }else{
-            animationLayer1.layer.removeAnimation(forKey: "animationLayer1")
-            animationLayer2.layer.removeAnimation(forKey: "animationLayer2")
-            animationLayer3.layer.removeAnimation(forKey: "animationLayer3")
-            updateLayerPostion(with: 0)
+            self.animationLayer1.layer.removeAnimation(forKey: "animationLayer1")
+            self.animationLayer2.layer.removeAnimation(forKey: "animationLayer2")
+            self.animationLayer3.layer.removeAnimation(forKey: "animationLayer3")
         }
     }
     
@@ -71,15 +71,12 @@ class HeaderAnimation: UIView {
         self.layoutIfNeeded()
     }
     
-    
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         if isAnimation{
             startAnimation(isAnimation)
         }
     }
-    
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -103,17 +100,14 @@ class HeaderAnimation: UIView {
         path.addLine(to: point2)
         path.addLine(to: point1)
         animationLayer1.layer.position = point1
+        
         let animation = CAKeyframeAnimation.init(keyPath: "position")
         animation.path = path
-        let frameAnimation = CAKeyframeAnimation.init(keyPath: "transform.translation.z")
-        frameAnimation.values = [1,2,2,1,1,0,1]
-        let group = CAAnimationGroup.init()
-        group.animations = [frameAnimation,animation]
-        group.duration = duration
-        group.repeatCount = HUGE
-        group.beginTime = 0
-        group.isRemovedOnCompletion = true
-        animationLayer1.layer.add(group, forKey: "animationLayer1")
+        animation.duration = duration
+        animation.repeatCount = HUGE
+        animation.beginTime = 0
+        animation.isRemovedOnCompletion = true
+        animationLayer1.layer.add(animation, forKey: "animationLayer1")
         
     }
     
@@ -135,18 +129,13 @@ class HeaderAnimation: UIView {
         animationLayer2.center = point4
         let animation = CAKeyframeAnimation.init(keyPath: "position")
         animation.path = path
-        let frameAnimation = CAKeyframeAnimation.init(keyPath: "transform.translation.z")
-        frameAnimation.values = [2,1,1,0,1,2,1]
-        let group = CAAnimationGroup.init()
-        group.animations = [frameAnimation,animation]
-        group.duration = duration
-        group.repeatCount = HUGE
-        group.isRemovedOnCompletion = true
-        animationLayer2.layer.add(group, forKey: "animationLayer2")
+        animation.duration = duration
+        animation.repeatCount = HUGE
+        animation.isRemovedOnCompletion = true
+        animationLayer2.layer.add(animation, forKey: "animationLayer2")
     }
     
     func setupAnimationThree(){
-        
         let path = CGMutablePath.init()
         let centerx = baseView.bounds.size.width/2
         let centery = baseView.bounds.size.height/2
@@ -164,18 +153,11 @@ class HeaderAnimation: UIView {
         animationLayer3.layer.position = point1
         let animation = CAKeyframeAnimation.init(keyPath: "position")
         animation.path = path
-        let frameAnimation = CAKeyframeAnimation.init(keyPath: "transform.translation.z")
-        frameAnimation.values = [1,0,1,2,2,1,1]
-        let group = CAAnimationGroup.init()
-        group.animations = [frameAnimation,animation]
-        group.duration = duration
-        group.repeatCount = HUGE
-        group.isRemovedOnCompletion = true
-        animationLayer3.layer.add(group, forKey: "animationLayer3")
+        animation.duration = duration
+        animation.repeatCount = HUGE
+        animation.isRemovedOnCompletion = true
+        animationLayer3.layer.add(animation, forKey: "animationLayer3")
     }
-    
-    
-    
     
     lazy var animationLayer1: UIView = {
         let layer = UIView.init()
@@ -185,6 +167,7 @@ class HeaderAnimation: UIView {
         layer.layer.cornerRadius = CGFloat(bollWidth/2)
         return layer
     }()
+    
     lazy var animationLayer2: UIView = {
         let layer = UIView.init()
         layer.backgroundColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1).withAlphaComponent(0.95)
@@ -193,6 +176,7 @@ class HeaderAnimation: UIView {
         layer.layer.cornerRadius = CGFloat(bollWidth/2)
         return layer
     }()
+    
     lazy var animationLayer3: UIView = {
         let layer = UIView.init()
         layer.backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1).withAlphaComponent(0.95)

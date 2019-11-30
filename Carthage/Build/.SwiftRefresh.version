@@ -8,11 +8,11 @@
   "tvOS" : [
 
   ],
-  "commitish" : "bbe23e1204a1cf0e5dc8e6fba16c9376853926a6",
+  "commitish" : "b074512ec569880c66fc86341520b7e1729e43ea",
   "iOS" : [
     {
       "name" : "SwiftRefresh",
-      "hash" : "d1bc668ec5eb154b08a942494e212d56865b5d864e2277258dbe212e485ced18",
+      "hash" : "bc94f072c35a31ee3733bb7bd1885082c8612fbc1e3afc5e2b8e14c361880fc4",
       "swiftToolchainVersion" : "5.1.2 (swiftlang-1100.0.278 clang-1100.0.33.9)"
     }
   ]

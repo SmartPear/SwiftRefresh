@@ -113,12 +113,12 @@ public class RefreshFooter: RefreshComponent {
     
     override func refreshComplete(_ noMore:Bool) {
         if self.scrollview == nil {return}
-        self.animationView.updateLayerPostion(with: 1)
-        self.animationView.startAnimation(false)
+        
         UIView.animate(withDuration: refreshAnimationTime, animations: {
             self.scrollview!.re_insetBottom = self.scrollview!.re_insetBottom - freshBeginHeight
-            self.animationView.updateLayerPostion(with: 0)
         }) { (_) in
+            self.animationView.startAnimation(false)
+            self.animationView.updateLayerPostion(with: 0)
             if noMore == true{
                 self.state = .noMoreData
             }else{
