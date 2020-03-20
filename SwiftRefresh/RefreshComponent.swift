@@ -11,11 +11,12 @@ import UIKit
 
 
 public class RefreshComponent: UIView {
+    
     var refreshClosure:(()->Void)?
     weak var scrollview:UIScrollView?
     var originContentOfSet:CGFloat = 0.0
     var hasShake = false
-    var _state = RefreshState.idle
+    private var _state = RefreshState.idle
     
     var state:RefreshState {
         get{
@@ -66,23 +67,31 @@ public class RefreshComponent: UIView {
         }
     }
     
-    public override func willMove(toSuperview newSuperview: UIView?) {
-        super.willMove(toSuperview: newSuperview)
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
         Log("添加到父视图",String.init(format: "%p", self))
-        if let scrollView = newSuperview as? UIScrollView{
-            self.scrollview = scrollView
-            self.presenter.updateScrollView(scrollView)
-            self.originContentOfSet = scrollView.re_inset.top
-            self.frame.size.width = scrollView.bounds.size.width
-            prepare()
-        }
+           if let scrollView = superview as? UIScrollView{
+            scrollView.translatesAutoresizingMaskIntoConstraints = false
+               self.scrollview = scrollView
+               self.presenter.updateScrollView(scrollView)
+               self.originContentOfSet = scrollView.re_inset.top
+               NSLayoutConstraint.activate([
+                   self.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+                   self.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+                   self.topAnchor.constraint(equalTo: scrollView.topAnchor),
+                   self.heightAnchor.constraint(equalToConstant: 100)
+               ])
+               prepare()
+           }
     }
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         Log("初始化",String.init(format: "%p", self))
-        self.autoresizingMask = .flexibleWidth
+        self.translatesAutoresizingMaskIntoConstraints = false
         self.clipsToBounds = true
+        self.backgroundColor = UIColor.yellow
     }
     
     required init?(coder aDecoder: NSCoder) {

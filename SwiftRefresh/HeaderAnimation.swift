@@ -33,11 +33,11 @@ class HeaderAnimation: UIView {
         let height  = NSLayoutConstraint.init(item: baseView, attribute: .height, relatedBy: .equal,  toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
         height.priority = UILayoutPriority.init(900)
         width.priority = UILayoutPriority.init(900)
-        self.addConstraints([centerx,centery,width,height])
+        addConstraints([centerx,centery,width,height])
         baseView.addSubview(animationLayer1)
         baseView.addSubview(animationLayer2)
         baseView.addSubview(animationLayer3)
-        self.updateLayerPostion(with: 0)
+        updateLayerPostion(with: 0)
         
     }
     
@@ -68,7 +68,6 @@ class HeaderAnimation: UIView {
         self.animationLayer2.center = point
         self.animationLayer1.center = point1
         self.animationLayer3.center = point2
-        self.layoutIfNeeded()
     }
     
     override func layoutSubviews() {

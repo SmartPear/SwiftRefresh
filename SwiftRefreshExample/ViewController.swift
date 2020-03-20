@@ -18,7 +18,12 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         navigationController?.navigationBar.isTranslucent = false        
         view.addSubview(tableView)
         
-        tableView.autoresizingMask = [.flexibleHeight,.flexibleWidth]
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo:view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo:view.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo:view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo:view.bottomAnchor),
+        ])
         let header = RefreshHeader.initHeaderWith {
             [unowned self] in
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 4, execute: {

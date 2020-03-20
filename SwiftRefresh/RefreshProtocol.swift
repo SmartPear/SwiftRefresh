@@ -42,20 +42,16 @@ class RefreshCommon: NSObject {
         if let scroll = self.scrollView {
             scroll.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.new, context: nil)
             scroll.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
-            self.pan = scroll.panGestureRecognizer
-            self.pan?.addObserver(self, forKeyPath: "state", options: .new, context: nil)
+            scroll.panGestureRecognizer.addObserver(self, forKeyPath: "state", options: .new, context: nil)
         }
     }
     
     func removeObservers(){
+        
         if let scroll = self.scrollView{
+            scroll.panGestureRecognizer.removeObserver(self, forKeyPath: "state")
             scroll.removeObserver(self, forKeyPath: "contentOffset")
             scroll.removeObserver(self, forKeyPath: "contentSize")
-        }
-        
-        if let pan = self.pan{
-            pan.removeObserver(self, forKeyPath: "state")
-            self.pan = nil
         }
     }
     
