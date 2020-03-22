@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		038D9B7322AFB15100D8FB6B /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038D9B7222AFB15100D8FB6B /* SecondViewController.swift */; };
 		038D9B7622AFCC2500D8FB6B /* RefreshComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCE22AE520300E99F2A /* RefreshComponent.swift */; };
 		038D9B7722AFCC2500D8FB6B /* HeaderAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCD22AE520300E99F2A /* HeaderAnimation.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		038D9B7822AFCC2500D8FB6B /* UIScrollView + SwiftRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B17CCA22AE520300E99F2A /* UIScrollView + SwiftRefresh.swift */; };
@@ -62,7 +61,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		038D9B7222AFB15100D8FB6B /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		038D9B7422AFB5A400D8FB6B /* RefreshProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshProtocol.swift; sourceTree = "<group>"; };
 		03B0581524265FEA00C1138B /* SwiftRefreshPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftRefreshPresenter.swift; sourceTree = "<group>"; };
 		03B17CA222AE51B200E99F2A /* SwiftRefreshExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftRefreshExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,7 +132,6 @@
 			children = (
 				03B17CA522AE51B200E99F2A /* AppDelegate.swift */,
 				03B17CA722AE51B200E99F2A /* ViewController.swift */,
-				038D9B7222AFB15100D8FB6B /* SecondViewController.swift */,
 				03B17CA922AE51B200E99F2A /* Main.storyboard */,
 				03B17CAC22AE51B200E99F2A /* Assets.xcassets */,
 				03B17CAE22AE51B200E99F2A /* LaunchScreen.storyboard */,
@@ -277,7 +274,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				03B17CA822AE51B200E99F2A /* ViewController.swift in Sources */,
-				038D9B7322AFB15100D8FB6B /* SecondViewController.swift in Sources */,
 				03B17CA622AE51B200E99F2A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

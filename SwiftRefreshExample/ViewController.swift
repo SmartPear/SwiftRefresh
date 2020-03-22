@@ -17,7 +17,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
 
-        let header = RefreshFooter.initFooterWith {
+        let header = RefreshHeader.initHeaderWith {
             [unowned self] in 
             self.value += 3
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
@@ -26,7 +26,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             }
         }
         header.beginRefresh()
-        tableView.footer = header
+        tableView.header = header
         tableView.backgroundColor = UIColor.white
 
     }
@@ -44,8 +44,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let control  = SecondViewController()
-        navigationController?.pushViewController(control, animated: true)
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
