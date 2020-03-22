@@ -14,25 +14,19 @@ class SecondViewController: UIViewController,UITableViewDelegate,UITableViewData
         super.viewDidLoad()
         view.backgroundColor = UIColor.red
         view.addSubview(tableView)
-
         tableView.autoresizingMask = [.flexibleHeight,.flexibleWidth]
         let header = RefreshHeader.initHeaderWith {
-            [weak self] in
+            [unowned self] in
+            self.value += 3
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 2, execute: {
-                if let weakself = self{
-                    weakself.value  = 12
-                    weakself.tableView.reloadData()
-                    weakself.tableView.header?.endRefresh()
-                    weakself.tableView.footer?.isHidden = false
-                }
+                    self.tableView.reloadData()
+                    self.tableView.header?.endRefresh()
             })
         }
 
         header.beginRefresh()
         tableView.header = header
 
-
-        
         let footer = RefreshFooter.initFooterWith(refresh: {
             [unowned self] in
 
@@ -41,7 +35,7 @@ class SecondViewController: UIViewController,UITableViewDelegate,UITableViewData
                 if self == nil {return}
                 self?.value += 1
                 self?.tableView.reloadData()
-                self?.tableView.footer?.endFreshWithnoMoreData()
+                self?.tableView.footer?.endRefresh()
             })
         })
         tableView.footer = footer

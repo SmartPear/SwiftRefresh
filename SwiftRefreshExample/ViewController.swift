@@ -17,15 +17,16 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
 
-        let header = RefreshHeader.initHeaderWith {
+        let header = RefreshFooter.initFooterWith {
             [unowned self] in 
             self.value += 3
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-                self.tableView.header?.endRefresh()
+                self.tableView.footer?.endRefresh()
+                self.tableView.reloadData()
             }
         }
         header.beginRefresh()
-        tableView.header = header
+        tableView.footer = header
         tableView.backgroundColor = UIColor.white
 
     }

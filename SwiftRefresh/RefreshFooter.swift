@@ -24,31 +24,63 @@ public class RefreshFooter: RefreshComponent {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepare()  {
-        if let superView = self.scrollview{
-            self.frame = CGRect.init(x: 0, y: scrollview!.contentSize.height, width: superView.bounds.size.width, height: freshBeginHeight)
-            self.addSubview(animationView)
-            self.addSubview(self.noMoredataView)
-            animationView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
-            self.animationView.frame = self.bounds
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        
+        if let scrollView = superview as? UIScrollView{
+            self.scrollview = scrollView
+            self.presenter.updateScrollView(scrollView)
+            self.originContentOfSet = scrollView.re_inset.top
+            var originY = scrollView.bounds.height > scrollView.contentSize.height ? scrollView.bounds.height:scrollView.contentSize.height
+                    originY -= scrollView.re_insetTop
+            topConstraint = NSLayoutConstraint.init(item: self, attribute: .top, relatedBy: .equal, toItem: scrollView, attribute: .top, multiplier: 1, constant: originY)
+            heightConstraint =  NSLayoutConstraint.init(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 190)
+            NSLayoutConstraint.activate([
+                topConstraint!,heightConstraint!,
+                NSLayoutConstraint.init(item: self, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1, constant: 0),
+                NSLayoutConstraint.init(item: self, attribute: .width, relatedBy: .equal, toItem: scrollView, attribute: .width, multiplier: 1, constant: 0),
+            ])
+            prepare()
         }
     }
     
+    override func prepare()  {
+        backgroundColor = UIColor.red
+        self.addSubview(animationView)
+        self.addSubview(self.noMoredataView)
+        animationView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+        self.animationView.frame = self.bounds
+    }
     
+    func updateOffset(_ value:CGFloat)  {
+        
+        //        topConstraint?.constant = -value
+        heightConstraint?.constant = value
+        
+    }
+    
+    func updateFrameWithProgress(_ progress:CGFloat) {
+        //        var height = freshBeginHeight * progress
+        //        if height == 0{
+        //            height = 0.5
+        //        }
+        //        self.updateOffset(height)
+        //        self.animationView.updateLayerPostion(with:progress)
+    }
     
     override func scrollViewContentOffsetDidChange(_ change: CGPoint) {
         if self.isHidden == true  {return}
-        if self.scrollview == nil {return}
+        guard let scrollview = scrollview else{return}
         if self.state == .refreshing || self.state == .noMoreData || self.state == .end || self.state == .noMoreData{///如果正在刷新,返回
             return
         }
         
-        if scrollview!.isDragging == true || self.state != .willRefresh{
+        if scrollview.isDragging == true || self.state != .willRefresh{
             var value:CGFloat = 0.0
-            if scrollview!.contentSize.height < scrollview!.bounds.size.height {
-                value = scrollview!.contentOffset.y + scrollview!.re_insetTop
+            if scrollview.contentSize.height < scrollview.bounds.size.height {
+                value = scrollview.contentOffset.y + scrollview.re_insetTop
             }else{
-                value = scrollview!.contentOffset.y - scrollview!.contentSize.height + scrollview!.bounds.size.height  - scrollview!.re_insetBottom
+                value = scrollview.contentOffset.y - scrollview.contentSize.height + scrollview.bounds.size.height  - scrollview.re_insetBottom
             }
             if value < 0 {
                 return
@@ -61,34 +93,43 @@ public class RefreshFooter: RefreshComponent {
             }else{
                 self.state = .idle
             }
-            self.animationView.updateLayerPostion(with: progress)
+            updateFrameWithProgress(progress)
         }
         
     }
     
     override func scrollViewContentSizeDidChange(_ size: CGSize) {
-        self.frame.origin.y = size.height
+        guard let scrollView = superview as? UIScrollView else {
+            return
+        }
+        var originY = scrollView.bounds.height > scrollView.contentSize.height ? scrollView.bounds.height:scrollView.contentSize.height
+        originY -= scrollView.re_insetTop
+        topConstraint = NSLayoutConstraint.init(item: self, attribute: .top, relatedBy: .equal, toItem: scrollView, attribute: .top, multiplier: 1, constant: originY)
     }
     
     override func startRefresh(){
-        if self.scrollview == nil {return}
+        guard let scrollview = scrollview else{
+            return
+        }
+        if let footerState = scrollview.footer?.state,footerState == .refreshing{
+            return
+        }
         if self.isHidden == false{
             self.animationView.startAnimation(true)
             UIView.animate(withDuration: refreshAnimationTime, animations: {
-                let bottom = self.scrollview!.re_insetBottom + freshBeginHeight
+                let bottom = scrollview.re_insetBottom + freshBeginHeight
                 self.scrollview!.re_insetBottom = bottom
-                var offset = self.scrollview!.contentOffset
-                var newValue = (self.scrollview!.contentSize.height - self.scrollview!.bounds.size.height + bottom)
+                var offset = scrollview.contentOffset
+                var newValue = (scrollview.contentSize.height - self.scrollview!.bounds.size.height + bottom)
                 if newValue < 0{
-                    if  newValue < -self.scrollview!.re_insetTop{
-                        newValue = -self.scrollview!.re_insetTop
+                    if  newValue < -scrollview.re_insetTop{
+                        newValue = -scrollview.re_insetTop
                     }
                 }
-
-                Log(newValue)
+                
                 offset.y = newValue
-                self.scrollview!.setContentOffset(offset, animated: true)
-                self.animationView.updateLayerPostion(with: 1)
+                scrollview.setContentOffset(offset, animated: true)
+                self.updateFrameWithProgress(1)
             }) { (_) in
                 self.executeRefreshingCallback()
             }
@@ -119,7 +160,7 @@ public class RefreshFooter: RefreshComponent {
             self.scrollview!.re_insetBottom = self.scrollview!.re_insetBottom - freshBeginHeight
         }) { (_) in
             self.animationView.startAnimation(false)
-            self.animationView.updateLayerPostion(with: 0)
+            self.updateFrameWithProgress(1)
             if noMore == true{
                 self.state = .noMoreData
             }else{

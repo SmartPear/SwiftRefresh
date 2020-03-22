@@ -60,22 +60,7 @@ public class RefreshComponent: UIView {
         refreshClosure?()
     }
     
-    public override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        if let scrollView = superview as? UIScrollView{
-            self.scrollview = scrollView
-            self.presenter.updateScrollView(scrollView)
-            self.originContentOfSet = scrollView.re_inset.top
-            topConstraint = NSLayoutConstraint.init(item: self, attribute: .top, relatedBy: .equal, toItem: scrollView, attribute: .top, multiplier: 1, constant: 0)
-            heightConstraint =  NSLayoutConstraint.init(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0.5)
-            NSLayoutConstraint.activate([
-                topConstraint!,heightConstraint!,
-                NSLayoutConstraint.init(item: self, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1, constant: 0),
-                NSLayoutConstraint.init(item: self, attribute: .width, relatedBy: .equal, toItem: scrollView, attribute: .width, multiplier: 1, constant: 0),
-            ])
-            setNeedsDisplay()
-        }
-    }
+ 
     
     public override func removeFromSuperview() {
         self.presenter.removeObservers()
@@ -89,7 +74,6 @@ public class RefreshComponent: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.clipsToBounds = true
         self.backgroundColor = UIColor.clear
-        prepare()
     }
 
     required init?(coder aDecoder: NSCoder) {
