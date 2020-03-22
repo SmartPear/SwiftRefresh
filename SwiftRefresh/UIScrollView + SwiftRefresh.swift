@@ -16,6 +16,7 @@ private var RefreshFooterKey = "RefreshFooterKey"
 extension UIScrollView {
     
   @objc public var header:RefreshHeader?{
+    
         get{
             return objc_getAssociatedObject(self, &RefreshHeaderKey) as? RefreshHeader
         }
@@ -24,7 +25,6 @@ extension UIScrollView {
             if self.header != nil{
                 self.header?.removeFromSuperview()
             }
-            
             objc_setAssociatedObject(self, &RefreshHeaderKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             if let newValue = newValue{
                 self.addSubview(newValue)
@@ -72,8 +72,8 @@ extension UIScrollView {
             }
             self.contentInset = inset
         }
-        
     }
+    
     var re_insetBottom:CGFloat{
         
         get{

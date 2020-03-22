@@ -21,18 +21,18 @@ class HeaderAnimation: UIView {
     let bollWidth:CGFloat = 13
     private var isAnimation = false
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+     init() {
+        super.init(frame: .zero)
         self.clipsToBounds = true
         backgroundColor = UIColor.clear
         addSubview(baseView)
+        baseView.backgroundColor = UIColor.clear
         baseView.translatesAutoresizingMaskIntoConstraints = false
         let centerx = NSLayoutConstraint.init(item: baseView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0)
         let centery = NSLayoutConstraint.init(item: baseView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
         let width   = NSLayoutConstraint.init(item: baseView, attribute: .width,   relatedBy: .equal, toItem: nil,  attribute: .notAnAttribute, multiplier: 1, constant: 100)
         let height  = NSLayoutConstraint.init(item: baseView, attribute: .height, relatedBy: .equal,  toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
-        height.priority = UILayoutPriority.init(900)
-        width.priority = UILayoutPriority.init(900)
+
         addConstraints([centerx,centery,width,height])
         baseView.addSubview(animationLayer1)
         baseView.addSubview(animationLayer2)

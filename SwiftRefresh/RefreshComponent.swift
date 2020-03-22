@@ -15,40 +15,37 @@ public class RefreshComponent: UIView {
     var refreshClosure:(()->Void)?
     weak var scrollview:UIScrollView?
     var originContentOfSet:CGFloat = 0.0
-    var hasShake = false
-    private var _state = RefreshState.idle
+    var topConstraint:NSLayoutConstraint?
+    var heightConstraint:NSLayoutConstraint?
     
-    var state:RefreshState {
-        get{
-            return self._state
-        }
-        set{
-            Log("state 设置新值 \(newValue)",String.init(format: "%p", self))
-            if self._state == newValue{
+    var hasShake = false    
+    var state:RefreshState = .idle{
+        willSet{
+            if self.state == newValue {
                 return
             }
-            self._state = newValue
-            Log("state 新值设置成功 \(self._state)")
-            switch self._state {
-            case .idle:
-                hasShake = false
-                showNoMoreDataView(false)
-            case .pulling:
-                break
-            case .refreshing:
-                self.hasShake = true
-                startRefresh()
-            case .willRefresh:
-                if  hasShake == false{
-                    hasShake = true
-                    addShake()
+        }
+        
+        didSet{
+            switch self.state {
+                case .idle:
+                    hasShake = false
+                    showNoMoreDataView(false)
+                case .pulling:
+                    break
+                case .refreshing:
+                    self.hasShake = true
+                    startRefresh()
+                case .willRefresh:
+                    if  hasShake == false{
+                        hasShake = true
+                        addShake()
                 }
-                break
-            case .end:
-                self.hasShake = false
-                refreshComplete(false)
-            case .noMoreData:
-                showNoMoreDataView(true)
+                case .end:
+                    self.hasShake = false
+                    refreshComplete(false)
+                case .noMoreData:
+                    showNoMoreDataView(true)
             }
         }
     }
@@ -59,49 +56,47 @@ public class RefreshComponent: UIView {
         self.noMoredataView.isHidden = !show
     }
     
-    
-    
     func executeRefreshingCallback() {
-        if let closure = self.refreshClosure{
-            closure()
-        }
+        refreshClosure?()
     }
     
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        Log("添加到父视图",String.init(format: "%p", self))
-           if let scrollView = superview as? UIScrollView{
-            scrollView.translatesAutoresizingMaskIntoConstraints = false
-               self.scrollview = scrollView
-               self.presenter.updateScrollView(scrollView)
-               self.originContentOfSet = scrollView.re_inset.top
-               NSLayoutConstraint.activate([
-                   self.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-                   self.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-                   self.topAnchor.constraint(equalTo: scrollView.topAnchor),
-                   self.heightAnchor.constraint(equalToConstant: 100)
-               ])
-               prepare()
-           }
+        if let scrollView = superview as? UIScrollView{
+            self.scrollview = scrollView
+            self.presenter.updateScrollView(scrollView)
+            self.originContentOfSet = scrollView.re_inset.top
+            topConstraint = NSLayoutConstraint.init(item: self, attribute: .top, relatedBy: .equal, toItem: scrollView, attribute: .top, multiplier: 1, constant: 0)
+            heightConstraint =  NSLayoutConstraint.init(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0.5)
+            NSLayoutConstraint.activate([
+                topConstraint!,heightConstraint!,
+                NSLayoutConstraint.init(item: self, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1, constant: 0),
+                NSLayoutConstraint.init(item: self, attribute: .width, relatedBy: .equal, toItem: scrollView, attribute: .width, multiplier: 1, constant: 0),
+            ])
+            setNeedsDisplay()
+        }
     }
-
+    
+    public override func removeFromSuperview() {
+        self.presenter.removeObservers()
+        self.scrollview = nil
+        super.removeFromSuperview()
+    }
+    
     
     override init(frame: CGRect) {
-        super.init(frame: frame)
-        Log("初始化",String.init(format: "%p", self))
+        super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.clipsToBounds = true
-        self.backgroundColor = UIColor.yellow
+        self.backgroundColor = UIColor.clear
+        prepare()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     public override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        Log("进入 drawRect",String.init(format: "%p", self))
         if self.state == .willRefresh{
             Log("willRefresh 进入刷新")
             if let scroll = self.scrollview{
@@ -119,7 +114,6 @@ public class RefreshComponent: UIView {
     }
     
     @objc public func beginRefresh(){
-        Log("beginRefresh",String.init(format: "%p", self))
         if self.isHidden {
             return
         }
@@ -149,11 +143,9 @@ public class RefreshComponent: UIView {
     }
     
     func startRefresh() {
-        
     }
     
     func refreshComplete(_ noMore:Bool) {
-        
     }
     
     func gesStateChanged(_ gesState:UIGestureRecognizer.State) {
@@ -164,19 +156,15 @@ public class RefreshComponent: UIView {
         }
     }
     
-    
     ///添加震动
     func addShake()  {
-        Log("添加震动",String.init(format: "%p", self))
-        if #available(iOS 10.0, *) {
-            let feedback = UIImpactFeedbackGenerator.init(style: .light)
-            feedback.prepare()
-            feedback.impactOccurred()
-        }
+        let feedback = UIImpactFeedbackGenerator.init(style: .light)
+        feedback.prepare()
+        feedback.impactOccurred()
     }
     
     lazy var animationView: HeaderAnimation = {
-        let view = HeaderAnimation.init(frame: self.bounds)
+        let view = HeaderAnimation.init()
         return view
     }()
     

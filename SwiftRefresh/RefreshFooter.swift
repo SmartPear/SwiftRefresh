@@ -15,6 +15,7 @@ public class RefreshFooter: RefreshComponent {
         footer.refreshClosure = refresh
         return footer
     }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

@@ -29,10 +29,10 @@ class RefreshUnity: NSObject {
 
 internal func Log(_ messsage : Any...) {
     
-    #if DEBUG
-    
-    debugPrint("\(messsage):linenum=\(#line) funcName =  \(#function)")
-    
-    #endif
+//    #if DEBUG
+//    
+//    debugPrint("\(messsage):linenum=\(#line) funcName =  \(#function)")
+//    
+//    #endif
     
 }

@@ -25,6 +25,7 @@ class RefreshCommon: NSObject {
     weak var viewTool:RefreshProtocol?
     weak var scrollView:UIScrollView?
     weak var pan:UIPanGestureRecognizer?
+    
     init(viewTool:RefreshProtocol) {
         self.viewTool = viewTool
     }
@@ -47,7 +48,6 @@ class RefreshCommon: NSObject {
     }
     
     func removeObservers(){
-        
         if let scroll = self.scrollView{
             scroll.panGestureRecognizer.removeObserver(self, forKeyPath: "state")
             scroll.removeObserver(self, forKeyPath: "contentOffset")
@@ -57,31 +57,28 @@ class RefreshCommon: NSObject {
     
     
     override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
+        guard let change = change else {
+            return
+        }
         if keyPath == "contentOffset"{
-            if let  change = change{
-                if let value = change[NSKeyValueChangeKey.newKey] as? CGPoint{
-                    viewTool!.scrollViewContentOffsetDidChange(value)
-                }
+            
+            if let value = change[NSKeyValueChangeKey.newKey] as? CGPoint{
+                viewTool!.scrollViewContentOffsetDidChange(value)
             }
         }
         
         if keyPath == "contentSize"{
             
-            if let  change = change{
-                if let value = change[NSKeyValueChangeKey.newKey] as? CGSize{
-                    viewTool!.scrollViewContentSizeDidChange(value)
-                    
-                }
+            if let value = change[NSKeyValueChangeKey.newKey] as? CGSize{
+                viewTool!.scrollViewContentSizeDidChange(value)
+                
             }
         }
         
         if keyPath == "state"{
-            if let  change = change{
-                if let value = change[NSKeyValueChangeKey.newKey] as? Int{
-                    if let state = UIGestureRecognizer.State.init(rawValue: value){
-                        viewTool!.gesStateChanged(state)
-                    }
+            if let value = change[NSKeyValueChangeKey.newKey] as? Int{
+                if let state = UIGestureRecognizer.State.init(rawValue: value){
+                    viewTool!.gesStateChanged(state)
                 }
             }
         }

@@ -9,51 +9,33 @@
 import UIKit
 import SwiftRefresh
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
-    var  value = 3
+    var  value = 0
+    @IBOutlet weak var tableView: UITableView!
     
     var open:Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationController?.navigationBar.isTranslucent = false        
-        view.addSubview(tableView)
-        
-        NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo:view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo:view.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo:view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo:view.bottomAnchor),
-        ])
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+
         let header = RefreshHeader.initHeaderWith {
-            [unowned self] in
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 4, execute: {
-                self.value += 3
-                self.tableView.reloadData()
+            [unowned self] in 
+            self.value += 3
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
                 self.tableView.header?.endRefresh()
-            })
+            }
         }
-        tableView.header = header
         header.beginRefresh()
-        let footer = RefreshFooter.initFooterWith(refresh: {
-            [unowned self] in
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()  + 2, execute: {
-                self.value += 3
-                self.tableView.reloadData()
-                self.tableView.footer?.endRefresh()
-            })
-        })
-        tableView.footer = footer
-        
+        tableView.header = header
+        tableView.backgroundColor = UIColor.white
+
     }
+    
 
     
-    lazy var tableView: UITableView = {
-        let tab = UITableView.init(frame: self.view.bounds)
-        tab.delegate = self
-        tab.dataSource = self
-        tab.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        return tab
-    }()
+    @IBAction func refreshAction(_ sender: Any) {
+        tableView.header?.beginRefresh()
+    }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.value

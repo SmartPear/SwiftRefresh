@@ -9,28 +9,22 @@
 import UIKit
 public class RefreshHeader: RefreshComponent {
     
-    /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
+    
     @objc public class func initHeaderWith(refresh:@escaping (()->Void)) -> RefreshHeader{
-        let header = RefreshHeader.init(frame: CGRect.init(x: 0, y: -1, width: UIScreen.main.bounds.size.width, height: 1))
+        let header = RefreshHeader.init(frame: .zero)
         header.refreshClosure = refresh
         return header
     }
-
+    
     
     override func prepare()  {
         addSubview(animationView)
         animationView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            animationView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            animationView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             animationView.topAnchor.constraint(equalTo: self.topAnchor),
-            animationView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            animationView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            animationView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            animationView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
         ])
         self.updateFrameWithProgress(0)
     }
@@ -40,11 +34,14 @@ public class RefreshHeader: RefreshComponent {
         if height == 0{
             height = 0.5
         }
-
-        print(height)
+        self.updateOffset(height)
         self.animationView.updateLayerPostion(with:progress)
     }
     
+    func updateOffset(_ value:CGFloat)  {
+        topConstraint?.constant = -value
+        heightConstraint?.constant = value
+    }
     
     override func scrollViewContentOffsetDidChange(_ change: CGPoint) {
         guard let scrollview = scrollview else {
@@ -56,12 +53,16 @@ public class RefreshHeader: RefreshComponent {
         if self.state == .refreshing||self.state == .noMoreData||self.state == .end{///如果正在刷新,返回
             return
         }
-        self.originContentOfSet = scrollview.re_inset.top
         let originOfset  = self.originContentOfSet
+        self.originContentOfSet = scrollview.re_inset.top
         let currentOfset = -scrollview.contentOffset.y
+        
         let offset = currentOfset - originOfset
         if offset < 0{
             return
+        }
+        if self.state == .idle || self.state == .pulling {
+            updateOffset(currentOfset)
         }
         let progress = min(1, offset/freshBeginHeight)
         if scrollview.isDragging||self.state != .willRefresh||self.state == .end{
@@ -89,7 +90,6 @@ public class RefreshHeader: RefreshComponent {
             var offset   = scrollView.contentOffset
             offset = CGPoint.init(x: offset.x, y: -newValue)
             self.animationView.startAnimation(true)
-            Log("开始刷新 \(newValue)",String.init(format: "%p", self))
             UIView.animate(withDuration: refreshAnimationTime, animations: {
                 scrollView.re_insetTop = newValue
                 scrollView.setContentOffset(offset, animated: true)
@@ -108,7 +108,6 @@ public class RefreshHeader: RefreshComponent {
             return
         }
         safeThread {
-            Log("刷新结束 \(self.originContentOfSet)",String.init(format: "%p", self))
             UIView.animate(withDuration: refreshAnimationTime, delay: 0, options: [.curveLinear], animations: {
                 scrollView.re_insetTop = self.originContentOfSet
             }) { (_) in
